@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
 import { Route as AuthenticatedCumpleanosRouteImport } from './routes/_authenticated/cumpleanos'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes.index'
 import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes.$id'
@@ -48,6 +49,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPendientesRoute = AuthenticatedPendientesRouteImport.update({
+  id: '/pendientes',
+  path: '/pendientes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedRevisionesRoute = AuthenticatedRevisionesRouteImport.update({
   id: '/revisiones',
   path: '/revisiones',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/agenda': typeof AuthenticatedAgendaRoute
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/agenda': typeof AuthenticatedAgendaRoute
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
   '/_authenticated/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/agenda'
     | '/cumpleanos'
     | '/dashboard'
+    | '/pendientes'
     | '/revisiones'
     | '/pacientes/$id'
     | '/pacientes/'
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/agenda'
     | '/cumpleanos'
     | '/dashboard'
+    | '/pendientes'
     | '/revisiones'
     | '/pacientes/$id'
     | '/pacientes'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/_authenticated/agenda'
     | '/_authenticated/cumpleanos'
     | '/_authenticated/dashboard'
+    | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
     | '/_authenticated/pacientes/$id'
     | '/_authenticated/pacientes/'
@@ -182,6 +194,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/pendientes': {
+      id: '/_authenticated/pendientes'
+      path: '/pendientes'
+      fullPath: '/pendientes'
+      preLoaderRoute: typeof AuthenticatedPendientesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/revisiones': {
       id: '/_authenticated/revisiones'
       path: '/revisiones'
@@ -210,6 +229,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
   AuthenticatedCumpleanosRoute: typeof AuthenticatedCumpleanosRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPendientesRoute: typeof AuthenticatedPendientesRoute
   AuthenticatedRevisionesRoute: typeof AuthenticatedRevisionesRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRoute
   AuthenticatedPacientesIndexRoute: typeof AuthenticatedPacientesIndexRoute
@@ -219,6 +239,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
   AuthenticatedCumpleanosRoute: AuthenticatedCumpleanosRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPendientesRoute: AuthenticatedPendientesRoute,
   AuthenticatedRevisionesRoute: AuthenticatedRevisionesRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRoute,
   AuthenticatedPacientesIndexRoute: AuthenticatedPacientesIndexRoute,
