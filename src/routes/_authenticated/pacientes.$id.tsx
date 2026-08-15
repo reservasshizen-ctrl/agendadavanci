@@ -62,7 +62,7 @@ function PatientDetail() {
             {patient.birth_date ? `${formatDate(patient.birth_date)} (${age(patient.birth_date)} años)` : "Sin fecha de nacimiento"}
           </p>
           <p className="text-sm text-muted-foreground">
-            Tel: {patient.phone || "—"} · WhatsApp: {patient.whatsapp || "—"} · {patient.email || "sin email"}
+            Tel: {patient.phone || "—"} · WhatsApp: {patient.whatsapp || "—"} · {patient.address ? "" : ""}
           </p>
           {patient.address && <p className="text-sm text-muted-foreground">{patient.address}</p>}
         </div>
@@ -111,7 +111,7 @@ function PatientDetail() {
           {(timeline?.appointments ?? []).map((a) => (
             <li key={a.id} className="flex items-center justify-between gap-2 py-2 text-sm">
               <span>
-                {formatShortDate(a.date)} · {formatTime(a.time)} · {label(a.type)}
+                {formatShortDate(a.date)} · {formatTime(a.time)} · {label(a.appointment_type)}
               </span>
               <StatusBadge value={a.status} />
             </li>
