@@ -63,7 +63,7 @@ export function useSavePatient() {
     mutationFn: async (values: Loose<Patient>) => {
       const { id, ...rest } = values;
       if (id) {
-        const { data, error } = await supabase.from("patients").update(rest).eq("id", id).select().single();
+        const { data, error } = await supabase.from("patients").update(rest as never).eq("id", id).select().single();
         if (error) throw error;
         return data;
       }
@@ -133,7 +133,7 @@ export function useSaveAppointment() {
     mutationFn: async (values: Loose<Appointment>) => {
       const { id, ...rest } = values;
       if (id) {
-        const { error } = await supabase.from("appointments").update(rest).eq("id", id);
+        const { error } = await supabase.from("appointments").update(rest as never).eq("id", id);
         if (error) throw error;
         return;
       }
