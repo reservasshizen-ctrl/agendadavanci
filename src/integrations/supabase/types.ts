@@ -14,7 +14,343 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      appointment_messages: {
+        Row: {
+          appointment_id: string | null
+          id: string
+          message_type: string
+          notes: string | null
+          patient_id: string
+          sent_at: string
+          sent_by: string | null
+          status: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          id?: string
+          message_type: string
+          notes?: string | null
+          patient_id: string
+          sent_at?: string
+          sent_by?: string | null
+          status?: string
+        }
+        Update: {
+          appointment_id?: string | null
+          id?: string
+          message_type?: string
+          notes?: string | null
+          patient_id?: string
+          sent_at?: string
+          sent_by?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointment_messages_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointment_messages_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      appointments: {
+        Row: {
+          appointment_type: string
+          created_at: string
+          date: string
+          duration: number
+          id: string
+          notes: string | null
+          patient_id: string
+          professional: string | null
+          schedule_sent: boolean
+          schedule_sent_at: string | null
+          schedule_sent_by: string | null
+          status: string
+          time: string
+          updated_at: string
+        }
+        Insert: {
+          appointment_type?: string
+          created_at?: string
+          date: string
+          duration?: number
+          id?: string
+          notes?: string | null
+          patient_id: string
+          professional?: string | null
+          schedule_sent?: boolean
+          schedule_sent_at?: string | null
+          schedule_sent_by?: string | null
+          status?: string
+          time: string
+          updated_at?: string
+        }
+        Update: {
+          appointment_type?: string
+          created_at?: string
+          date?: string
+          duration?: number
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          professional?: string | null
+          schedule_sent?: boolean
+          schedule_sent_at?: string | null
+          schedule_sent_by?: string | null
+          status?: string
+          time?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      attendance: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          patient_id: string
+          reason: string | null
+          status: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          patient_id: string
+          reason?: string | null
+          status: string
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          reason?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attendance_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patient_status_history: {
+        Row: {
+          created_at: string
+          id: string
+          new_status: string
+          notes: string | null
+          patient_id: string
+          previous_status: string | null
+          reason: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          new_status: string
+          notes?: string | null
+          patient_id: string
+          previous_status?: string | null
+          reason?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          new_status?: string
+          notes?: string | null
+          patient_id?: string
+          previous_status?: string | null
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patient_status_history_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patients: {
+        Row: {
+          abandonment_date: string | null
+          abandonment_reason: string | null
+          address: string | null
+          archived: boolean
+          birth_date: string | null
+          created_at: string
+          document_number: string | null
+          first_consultation_date: string | null
+          first_name: string
+          full_name: string | null
+          id: string
+          last_name: string
+          next_review_date: string | null
+          next_review_reason: string | null
+          next_review_time: string | null
+          notes: string | null
+          phone: string | null
+          status: string
+          updated_at: string
+          whatsapp: string | null
+        }
+        Insert: {
+          abandonment_date?: string | null
+          abandonment_reason?: string | null
+          address?: string | null
+          archived?: boolean
+          birth_date?: string | null
+          created_at?: string
+          document_number?: string | null
+          first_consultation_date?: string | null
+          first_name: string
+          full_name?: string | null
+          id?: string
+          last_name: string
+          next_review_date?: string | null
+          next_review_reason?: string | null
+          next_review_time?: string | null
+          notes?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Update: {
+          abandonment_date?: string | null
+          abandonment_reason?: string | null
+          address?: string | null
+          archived?: boolean
+          birth_date?: string | null
+          created_at?: string
+          document_number?: string | null
+          first_consultation_date?: string | null
+          first_name?: string
+          full_name?: string | null
+          id?: string
+          last_name?: string
+          next_review_date?: string | null
+          next_review_reason?: string | null
+          next_review_time?: string | null
+          notes?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          patient_id: string
+          professional: string | null
+          reminder_sent: boolean
+          reminder_sent_at: string | null
+          review_date: string
+          review_time: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          patient_id: string
+          professional?: string | null
+          reminder_sent?: boolean
+          reminder_sent_at?: string | null
+          review_date: string
+          review_time?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          professional?: string | null
+          reminder_sent?: boolean
+          reminder_sent_at?: string | null
+          review_date?: string
+          review_time?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
