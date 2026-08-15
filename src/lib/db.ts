@@ -2,6 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Appointment, AppointmentWithPatient, Patient } from "./sns";
 
+export type Loose<T> = { [K in keyof T]?: T[K] | undefined } & { id?: string | undefined };
+
 const invalidateAll = (qc: ReturnType<typeof useQueryClient>) => {
   qc.invalidateQueries();
 };
@@ -58,7 +60,7 @@ export function usePatientTimeline(patientId: string) {
 export function useSavePatient() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (values: Partial<Patient> & { id?: string }) => {
+    mutationFn: async (values: Loose<Patient>) => {
       const { id, ...rest } = values;
       if (id) {
         const { data, error } = await supabase.from("patients").update(rest).eq("id", id).select().single();
@@ -128,7 +130,7 @@ export function useAppointments(fromISO?: string, toISO?: string) {
 export function useSaveAppointment() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (values: Partial<Appointment> & { id?: string }) => {
+    mutationFn: async (values: Loose<Appointment>) => {
       const { id, ...rest } = values;
       if (id) {
         const { error } = await supabase.from("appointments").update(rest).eq("id", id);
