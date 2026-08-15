@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
+import { Route as AuthenticatedConfiguracionRouteImport } from './routes/_authenticated/configuracion'
 import { Route as AuthenticatedCumpleanosRouteImport } from './routes/_authenticated/cumpleanos'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedFaltasRouteImport } from './routes/_authenticated/faltas'
@@ -41,6 +42,12 @@ const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
   path: '/agenda',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedConfiguracionRoute =
+  AuthenticatedConfiguracionRouteImport.update({
+    id: '/configuracion',
+    path: '/configuracion',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedCumpleanosRoute = AuthenticatedCumpleanosRouteImport.update({
   id: '/cumpleanos',
   path: '/cumpleanos',
@@ -88,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
+  '/configuracion': typeof AuthenticatedConfiguracionRoute
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
@@ -101,6 +109,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
+  '/configuracion': typeof AuthenticatedConfiguracionRoute
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
@@ -116,6 +125,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
+  '/_authenticated/configuracion': typeof AuthenticatedConfiguracionRoute
   '/_authenticated/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/faltas': typeof AuthenticatedFaltasRoute
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agenda'
+    | '/configuracion'
     | '/cumpleanos'
     | '/dashboard'
     | '/faltas'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agenda'
+    | '/configuracion'
     | '/cumpleanos'
     | '/dashboard'
     | '/faltas'
@@ -158,6 +170,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/agenda'
+    | '/_authenticated/configuracion'
     | '/_authenticated/cumpleanos'
     | '/_authenticated/dashboard'
     | '/_authenticated/faltas'
@@ -202,6 +215,13 @@ declare module '@tanstack/react-router' {
       path: '/agenda'
       fullPath: '/agenda'
       preLoaderRoute: typeof AuthenticatedAgendaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/configuracion': {
+      id: '/_authenticated/configuracion'
+      path: '/configuracion'
+      fullPath: '/configuracion'
+      preLoaderRoute: typeof AuthenticatedConfiguracionRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/cumpleanos': {
@@ -265,6 +285,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
+  AuthenticatedConfiguracionRoute: typeof AuthenticatedConfiguracionRoute
   AuthenticatedCumpleanosRoute: typeof AuthenticatedCumpleanosRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFaltasRoute: typeof AuthenticatedFaltasRoute
@@ -277,6 +298,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
+  AuthenticatedConfiguracionRoute: AuthenticatedConfiguracionRoute,
   AuthenticatedCumpleanosRoute: AuthenticatedCumpleanosRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFaltasRoute: AuthenticatedFaltasRoute,
