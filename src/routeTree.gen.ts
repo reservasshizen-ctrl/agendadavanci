@@ -16,6 +16,7 @@ import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedCumpleanosRouteImport } from './routes/_authenticated/cumpleanos'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedFaltasRouteImport } from './routes/_authenticated/faltas'
+import { Route as AuthenticatedHistorialRouteImport } from './routes/_authenticated/historial'
 import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes.index'
@@ -55,6 +56,11 @@ const AuthenticatedFaltasRoute = AuthenticatedFaltasRouteImport.update({
   path: '/faltas',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedHistorialRoute = AuthenticatedHistorialRouteImport.update({
+  id: '/historial',
+  path: '/historial',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPendientesRoute = AuthenticatedPendientesRouteImport.update({
   id: '/pendientes',
   path: '/pendientes',
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
+  '/historial': typeof AuthenticatedHistorialRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
+  '/historial': typeof AuthenticatedHistorialRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -111,6 +119,7 @@ export interface FileRoutesById {
   '/_authenticated/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/faltas': typeof AuthenticatedFaltasRoute
+  '/_authenticated/historial': typeof AuthenticatedHistorialRoute
   '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/cumpleanos'
     | '/dashboard'
     | '/faltas'
+    | '/historial'
     | '/pendientes'
     | '/revisiones'
     | '/pacientes/$id'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/cumpleanos'
     | '/dashboard'
     | '/faltas'
+    | '/historial'
     | '/pendientes'
     | '/revisiones'
     | '/pacientes/$id'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cumpleanos'
     | '/_authenticated/dashboard'
     | '/_authenticated/faltas'
+    | '/_authenticated/historial'
     | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
     | '/_authenticated/pacientes/$id'
@@ -213,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFaltasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/historial': {
+      id: '/_authenticated/historial'
+      path: '/historial'
+      fullPath: '/historial'
+      preLoaderRoute: typeof AuthenticatedHistorialRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/pendientes': {
       id: '/_authenticated/pendientes'
       path: '/pendientes'
@@ -249,6 +268,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCumpleanosRoute: typeof AuthenticatedCumpleanosRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFaltasRoute: typeof AuthenticatedFaltasRoute
+  AuthenticatedHistorialRoute: typeof AuthenticatedHistorialRoute
   AuthenticatedPendientesRoute: typeof AuthenticatedPendientesRoute
   AuthenticatedRevisionesRoute: typeof AuthenticatedRevisionesRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRoute
@@ -260,6 +280,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCumpleanosRoute: AuthenticatedCumpleanosRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFaltasRoute: AuthenticatedFaltasRoute,
+  AuthenticatedHistorialRoute: AuthenticatedHistorialRoute,
   AuthenticatedPendientesRoute: AuthenticatedPendientesRoute,
   AuthenticatedRevisionesRoute: AuthenticatedRevisionesRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRoute,
