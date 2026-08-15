@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
+import { Route as AuthenticatedCumpleanosRouteImport } from './routes/_authenticated/cumpleanos'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes.index'
@@ -35,6 +36,11 @@ const AuthRoute = AuthRouteImport.update({
 const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
   id: '/agenda',
   path: '/agenda',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCumpleanosRoute = AuthenticatedCumpleanosRouteImport.update({
+  id: '/cumpleanos',
+  path: '/cumpleanos',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
+  '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
+  '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
+  '/_authenticated/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agenda'
+    | '/cumpleanos'
     | '/dashboard'
     | '/revisiones'
     | '/pacientes/$id'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agenda'
+    | '/cumpleanos'
     | '/dashboard'
     | '/revisiones'
     | '/pacientes/$id'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/agenda'
+    | '/_authenticated/cumpleanos'
     | '/_authenticated/dashboard'
     | '/_authenticated/revisiones'
     | '/_authenticated/pacientes/$id'
@@ -156,6 +168,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAgendaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/cumpleanos': {
+      id: '/_authenticated/cumpleanos'
+      path: '/cumpleanos'
+      fullPath: '/cumpleanos'
+      preLoaderRoute: typeof AuthenticatedCumpleanosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -189,6 +208,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
+  AuthenticatedCumpleanosRoute: typeof AuthenticatedCumpleanosRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedRevisionesRoute: typeof AuthenticatedRevisionesRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRoute
@@ -197,6 +217,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
+  AuthenticatedCumpleanosRoute: AuthenticatedCumpleanosRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedRevisionesRoute: AuthenticatedRevisionesRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRoute,
