@@ -10,33 +10,181 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
+import { Route as AuthenticatedConfiguracionRouteImport } from './routes/_authenticated/configuracion'
+import { Route as AuthenticatedCumpleanosRouteImport } from './routes/_authenticated/cumpleanos'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedFaltasRouteImport } from './routes/_authenticated/faltas'
+import { Route as AuthenticatedHistorialRouteImport } from './routes/_authenticated/historial'
+import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
+import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
+import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes.index'
+import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedConfiguracionRoute =
+  AuthenticatedConfiguracionRouteImport.update({
+    id: '/configuracion',
+    path: '/configuracion',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCumpleanosRoute = AuthenticatedCumpleanosRouteImport.update({
+  id: '/cumpleanos',
+  path: '/cumpleanos',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFaltasRoute = AuthenticatedFaltasRouteImport.update({
+  id: '/faltas',
+  path: '/faltas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedHistorialRoute = AuthenticatedHistorialRouteImport.update({
+  id: '/historial',
+  path: '/historial',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPendientesRoute = AuthenticatedPendientesRouteImport.update({
+  id: '/pendientes',
+  path: '/pendientes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRevisionesRoute = AuthenticatedRevisionesRouteImport.update({
+  id: '/revisiones',
+  path: '/revisiones',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPacientesIndexRoute =
+  AuthenticatedPacientesIndexRouteImport.update({
+    id: '/pacientes/',
+    path: '/pacientes/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPacientesIdRoute =
+  AuthenticatedPacientesIdRouteImport.update({
+    id: '/pacientes/$id',
+    path: '/pacientes/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/agenda': typeof AuthenticatedAgendaRoute
+  '/configuracion': typeof AuthenticatedConfiguracionRoute
+  '/cumpleanos': typeof AuthenticatedCumpleanosRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/faltas': typeof AuthenticatedFaltasRoute
+  '/historial': typeof AuthenticatedHistorialRoute
+  '/pendientes': typeof AuthenticatedPendientesRoute
+  '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/pacientes/': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/agenda': typeof AuthenticatedAgendaRoute
+  '/configuracion': typeof AuthenticatedConfiguracionRoute
+  '/cumpleanos': typeof AuthenticatedCumpleanosRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/faltas': typeof AuthenticatedFaltasRoute
+  '/historial': typeof AuthenticatedHistorialRoute
+  '/pendientes': typeof AuthenticatedPendientesRoute
+  '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/pacientes': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
+  '/_authenticated/configuracion': typeof AuthenticatedConfiguracionRoute
+  '/_authenticated/cumpleanos': typeof AuthenticatedCumpleanosRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/faltas': typeof AuthenticatedFaltasRoute
+  '/_authenticated/historial': typeof AuthenticatedHistorialRoute
+  '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
+  '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
+  '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/agenda'
+    | '/configuracion'
+    | '/cumpleanos'
+    | '/dashboard'
+    | '/faltas'
+    | '/historial'
+    | '/pendientes'
+    | '/revisiones'
+    | '/pacientes/$id'
+    | '/pacientes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/agenda'
+    | '/configuracion'
+    | '/cumpleanos'
+    | '/dashboard'
+    | '/faltas'
+    | '/historial'
+    | '/pendientes'
+    | '/revisiones'
+    | '/pacientes/$id'
+    | '/pacientes'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/agenda'
+    | '/_authenticated/configuracion'
+    | '/_authenticated/cumpleanos'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/faltas'
+    | '/_authenticated/historial'
+    | '/_authenticated/pendientes'
+    | '/_authenticated/revisiones'
+    | '/_authenticated/pacientes/$id'
+    | '/_authenticated/pacientes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +196,126 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/agenda': {
+      id: '/_authenticated/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof AuthenticatedAgendaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/configuracion': {
+      id: '/_authenticated/configuracion'
+      path: '/configuracion'
+      fullPath: '/configuracion'
+      preLoaderRoute: typeof AuthenticatedConfiguracionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cumpleanos': {
+      id: '/_authenticated/cumpleanos'
+      path: '/cumpleanos'
+      fullPath: '/cumpleanos'
+      preLoaderRoute: typeof AuthenticatedCumpleanosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/faltas': {
+      id: '/_authenticated/faltas'
+      path: '/faltas'
+      fullPath: '/faltas'
+      preLoaderRoute: typeof AuthenticatedFaltasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/historial': {
+      id: '/_authenticated/historial'
+      path: '/historial'
+      fullPath: '/historial'
+      preLoaderRoute: typeof AuthenticatedHistorialRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pendientes': {
+      id: '/_authenticated/pendientes'
+      path: '/pendientes'
+      fullPath: '/pendientes'
+      preLoaderRoute: typeof AuthenticatedPendientesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/revisiones': {
+      id: '/_authenticated/revisiones'
+      path: '/revisiones'
+      fullPath: '/revisiones'
+      preLoaderRoute: typeof AuthenticatedRevisionesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pacientes/': {
+      id: '/_authenticated/pacientes/'
+      path: '/pacientes'
+      fullPath: '/pacientes/'
+      preLoaderRoute: typeof AuthenticatedPacientesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pacientes/$id': {
+      id: '/_authenticated/pacientes/$id'
+      path: '/pacientes/$id'
+      fullPath: '/pacientes/$id'
+      preLoaderRoute: typeof AuthenticatedPacientesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
+  AuthenticatedConfiguracionRoute: typeof AuthenticatedConfiguracionRoute
+  AuthenticatedCumpleanosRoute: typeof AuthenticatedCumpleanosRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedFaltasRoute: typeof AuthenticatedFaltasRoute
+  AuthenticatedHistorialRoute: typeof AuthenticatedHistorialRoute
+  AuthenticatedPendientesRoute: typeof AuthenticatedPendientesRoute
+  AuthenticatedRevisionesRoute: typeof AuthenticatedRevisionesRoute
+  AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRoute
+  AuthenticatedPacientesIndexRoute: typeof AuthenticatedPacientesIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
+  AuthenticatedConfiguracionRoute: AuthenticatedConfiguracionRoute,
+  AuthenticatedCumpleanosRoute: AuthenticatedCumpleanosRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedFaltasRoute: AuthenticatedFaltasRoute,
+  AuthenticatedHistorialRoute: AuthenticatedHistorialRoute,
+  AuthenticatedPendientesRoute: AuthenticatedPendientesRoute,
+  AuthenticatedRevisionesRoute: AuthenticatedRevisionesRoute,
+  AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRoute,
+  AuthenticatedPacientesIndexRoute: AuthenticatedPacientesIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
