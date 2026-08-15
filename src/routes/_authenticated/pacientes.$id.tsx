@@ -62,7 +62,7 @@ function PatientDetail() {
             {patient.birth_date ? `${formatDate(patient.birth_date)} (${age(patient.birth_date)} años)` : "Sin fecha de nacimiento"}
           </p>
           <p className="text-sm text-muted-foreground">
-            Tel: {patient.phone || "—"} · WhatsApp: {patient.whatsapp || "—"} · {patient.address ? "" : ""}
+            Tel: {patient.phone || "—"} · WhatsApp: {patient.whatsapp || "—"}
           </p>
           {patient.address && <p className="text-sm text-muted-foreground">{patient.address}</p>}
         </div>
