@@ -23,6 +23,7 @@ import { Route as AuthenticatedHistorialRouteImport } from './routes/_authentica
 import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
 import { Route as PortalIndexRouteImport } from './routes/portal/index'
+import { Route as PortalTurnosRouteImport } from './routes/portal/turnos'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes.index'
 import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes.$id'
 
@@ -96,6 +97,11 @@ const PortalIndexRoute = PortalIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PortalRouteRoute,
 } as any)
+const PortalTurnosRoute = PortalTurnosRouteImport.update({
+  id: '/turnos',
+  path: '/turnos',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
 const AuthenticatedPacientesIndexRoute =
   AuthenticatedPacientesIndexRouteImport.update({
     id: '/pacientes/',
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/historial': typeof AuthenticatedHistorialRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/turnos': typeof PortalTurnosRoute
   '/portal/': typeof PortalIndexRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/historial': typeof AuthenticatedHistorialRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/turnos': typeof PortalTurnosRoute
   '/portal': typeof PortalIndexRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/_authenticated/historial': typeof AuthenticatedHistorialRoute
   '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/turnos': typeof PortalTurnosRoute
   '/portal/': typeof PortalIndexRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/pendientes'
     | '/revisiones'
+    | '/portal/turnos'
     | '/portal/'
     | '/pacientes/$id'
     | '/pacientes/'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/pendientes'
     | '/revisiones'
+    | '/portal/turnos'
     | '/portal'
     | '/pacientes/$id'
     | '/pacientes'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/_authenticated/historial'
     | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
+    | '/portal/turnos'
     | '/portal/'
     | '/_authenticated/pacientes/$id'
     | '/_authenticated/pacientes/'
@@ -323,6 +335,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalIndexRouteImport
       parentRoute: typeof PortalRouteRoute
     }
+    '/portal/turnos': {
+      id: '/portal/turnos'
+      path: '/turnos'
+      fullPath: '/portal/turnos'
+      preLoaderRoute: typeof PortalTurnosRouteImport
+      parentRoute: typeof PortalRouteRoute
+    }
     '/_authenticated/pacientes/': {
       id: '/_authenticated/pacientes/'
       path: '/pacientes'
@@ -370,10 +389,12 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface PortalRouteRouteChildren {
+  PortalTurnosRoute: typeof PortalTurnosRoute
   PortalIndexRoute: typeof PortalIndexRoute
 }
 
 const PortalRouteRouteChildren: PortalRouteRouteChildren = {
+  PortalTurnosRoute: PortalTurnosRoute,
   PortalIndexRoute: PortalIndexRoute,
 }
 
