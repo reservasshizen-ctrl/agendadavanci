@@ -215,6 +215,15 @@ function AccesoPaciente() {
               <Field label="Fecha de nacimiento *">
                 <Input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
               </Field>
+              <Field label="Número de teléfono *">
+                <Input
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  maxLength={25}
+                  inputMode="tel"
+                  placeholder="Ej: 0981 123456"
+                />
+              </Field>
               <Button type="submit" className="w-full" disabled={loading}>
                 Registrarme e ingresar
               </Button>
