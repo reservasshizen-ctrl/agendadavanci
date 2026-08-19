@@ -23,6 +23,7 @@ import { Route as AuthenticatedHistorialRouteImport } from './routes/_authentica
 import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
 import { Route as PortalIndexRouteImport } from './routes/portal/index'
+import { Route as PortalNotificacionesRouteImport } from './routes/portal/notificaciones'
 import { Route as PortalNovedadesRouteImport } from './routes/portal/novedades'
 import { Route as PortalTurnosRouteImport } from './routes/portal/turnos'
 import { Route as PortalVideosRouteImport } from './routes/portal/videos'
@@ -99,6 +100,11 @@ const PortalIndexRoute = PortalIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PortalRouteRoute,
 } as any)
+const PortalNotificacionesRoute = PortalNotificacionesRouteImport.update({
+  id: '/notificaciones',
+  path: '/notificaciones',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
 const PortalNovedadesRoute = PortalNovedadesRouteImport.update({
   id: '/novedades',
   path: '/novedades',
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/historial': typeof AuthenticatedHistorialRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/notificaciones': typeof PortalNotificacionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
   '/portal/videos': typeof PortalVideosRoute
@@ -159,6 +166,7 @@ export interface FileRoutesByTo {
   '/historial': typeof AuthenticatedHistorialRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/notificaciones': typeof PortalNotificacionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
   '/portal/videos': typeof PortalVideosRoute
@@ -181,6 +189,7 @@ export interface FileRoutesById {
   '/_authenticated/historial': typeof AuthenticatedHistorialRoute
   '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/notificaciones': typeof PortalNotificacionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
   '/portal/videos': typeof PortalVideosRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/pendientes'
     | '/revisiones'
+    | '/portal/notificaciones'
     | '/portal/novedades'
     | '/portal/turnos'
     | '/portal/videos'
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/pendientes'
     | '/revisiones'
+    | '/portal/notificaciones'
     | '/portal/novedades'
     | '/portal/turnos'
     | '/portal/videos'
@@ -243,6 +254,7 @@ export interface FileRouteTypes {
     | '/_authenticated/historial'
     | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
+    | '/portal/notificaciones'
     | '/portal/novedades'
     | '/portal/turnos'
     | '/portal/videos'
@@ -359,6 +371,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalIndexRouteImport
       parentRoute: typeof PortalRouteRoute
     }
+    '/portal/notificaciones': {
+      id: '/portal/notificaciones'
+      path: '/notificaciones'
+      fullPath: '/portal/notificaciones'
+      preLoaderRoute: typeof PortalNotificacionesRouteImport
+      parentRoute: typeof PortalRouteRoute
+    }
     '/portal/novedades': {
       id: '/portal/novedades'
       path: '/novedades'
@@ -427,6 +446,7 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface PortalRouteRouteChildren {
+  PortalNotificacionesRoute: typeof PortalNotificacionesRoute
   PortalNovedadesRoute: typeof PortalNovedadesRoute
   PortalTurnosRoute: typeof PortalTurnosRoute
   PortalVideosRoute: typeof PortalVideosRoute
@@ -434,6 +454,7 @@ interface PortalRouteRouteChildren {
 }
 
 const PortalRouteRouteChildren: PortalRouteRouteChildren = {
+  PortalNotificacionesRoute: PortalNotificacionesRoute,
   PortalNovedadesRoute: PortalNovedadesRoute,
   PortalTurnosRoute: PortalTurnosRoute,
   PortalVideosRoute: PortalVideosRoute,
