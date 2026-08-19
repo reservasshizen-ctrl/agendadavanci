@@ -23,6 +23,7 @@ import { Route as AuthenticatedHistorialRouteImport } from './routes/_authentica
 import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
 import { Route as PortalIndexRouteImport } from './routes/portal/index'
+import { Route as PortalCuentaRouteImport } from './routes/portal/cuenta'
 import { Route as PortalNotificacionesRouteImport } from './routes/portal/notificaciones'
 import { Route as PortalNovedadesRouteImport } from './routes/portal/novedades'
 import { Route as PortalTurnosRouteImport } from './routes/portal/turnos'
@@ -100,6 +101,11 @@ const PortalIndexRoute = PortalIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PortalRouteRoute,
 } as any)
+const PortalCuentaRoute = PortalCuentaRouteImport.update({
+  id: '/cuenta',
+  path: '/cuenta',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
 const PortalNotificacionesRoute = PortalNotificacionesRouteImport.update({
   id: '/notificaciones',
   path: '/notificaciones',
@@ -146,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/historial': typeof AuthenticatedHistorialRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/cuenta': typeof PortalCuentaRoute
   '/portal/notificaciones': typeof PortalNotificacionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/historial': typeof AuthenticatedHistorialRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/cuenta': typeof PortalCuentaRoute
   '/portal/notificaciones': typeof PortalNotificacionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
@@ -189,6 +197,7 @@ export interface FileRoutesById {
   '/_authenticated/historial': typeof AuthenticatedHistorialRoute
   '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/cuenta': typeof PortalCuentaRoute
   '/portal/notificaciones': typeof PortalNotificacionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/pendientes'
     | '/revisiones'
+    | '/portal/cuenta'
     | '/portal/notificaciones'
     | '/portal/novedades'
     | '/portal/turnos'
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/pendientes'
     | '/revisiones'
+    | '/portal/cuenta'
     | '/portal/notificaciones'
     | '/portal/novedades'
     | '/portal/turnos'
@@ -254,6 +265,7 @@ export interface FileRouteTypes {
     | '/_authenticated/historial'
     | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
+    | '/portal/cuenta'
     | '/portal/notificaciones'
     | '/portal/novedades'
     | '/portal/turnos'
@@ -371,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalIndexRouteImport
       parentRoute: typeof PortalRouteRoute
     }
+    '/portal/cuenta': {
+      id: '/portal/cuenta'
+      path: '/cuenta'
+      fullPath: '/portal/cuenta'
+      preLoaderRoute: typeof PortalCuentaRouteImport
+      parentRoute: typeof PortalRouteRoute
+    }
     '/portal/notificaciones': {
       id: '/portal/notificaciones'
       path: '/notificaciones'
@@ -446,6 +465,7 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface PortalRouteRouteChildren {
+  PortalCuentaRoute: typeof PortalCuentaRoute
   PortalNotificacionesRoute: typeof PortalNotificacionesRoute
   PortalNovedadesRoute: typeof PortalNovedadesRoute
   PortalTurnosRoute: typeof PortalTurnosRoute
@@ -454,6 +474,7 @@ interface PortalRouteRouteChildren {
 }
 
 const PortalRouteRouteChildren: PortalRouteRouteChildren = {
+  PortalCuentaRoute: PortalCuentaRoute,
   PortalNotificacionesRoute: PortalNotificacionesRoute,
   PortalNovedadesRoute: PortalNovedadesRoute,
   PortalTurnosRoute: PortalTurnosRoute,
