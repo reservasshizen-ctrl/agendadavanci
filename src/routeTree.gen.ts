@@ -23,6 +23,7 @@ import { Route as AuthenticatedHistorialRouteImport } from './routes/_authentica
 import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
 import { Route as PortalIndexRouteImport } from './routes/portal/index'
+import { Route as PortalNovedadesRouteImport } from './routes/portal/novedades'
 import { Route as PortalTurnosRouteImport } from './routes/portal/turnos'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes.index'
 import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes.$id'
@@ -97,6 +98,11 @@ const PortalIndexRoute = PortalIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PortalRouteRoute,
 } as any)
+const PortalNovedadesRoute = PortalNovedadesRouteImport.update({
+  id: '/novedades',
+  path: '/novedades',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
 const PortalTurnosRoute = PortalTurnosRouteImport.update({
   id: '/turnos',
   path: '/turnos',
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/historial': typeof AuthenticatedHistorialRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
   '/portal/': typeof PortalIndexRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/historial': typeof AuthenticatedHistorialRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
   '/portal': typeof PortalIndexRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/_authenticated/historial': typeof AuthenticatedHistorialRoute
   '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
   '/portal/': typeof PortalIndexRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/pendientes'
     | '/revisiones'
+    | '/portal/novedades'
     | '/portal/turnos'
     | '/portal/'
     | '/pacientes/$id'
@@ -202,6 +212,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/pendientes'
     | '/revisiones'
+    | '/portal/novedades'
     | '/portal/turnos'
     | '/portal'
     | '/pacientes/$id'
@@ -221,6 +232,7 @@ export interface FileRouteTypes {
     | '/_authenticated/historial'
     | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
+    | '/portal/novedades'
     | '/portal/turnos'
     | '/portal/'
     | '/_authenticated/pacientes/$id'
@@ -335,6 +347,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalIndexRouteImport
       parentRoute: typeof PortalRouteRoute
     }
+    '/portal/novedades': {
+      id: '/portal/novedades'
+      path: '/novedades'
+      fullPath: '/portal/novedades'
+      preLoaderRoute: typeof PortalNovedadesRouteImport
+      parentRoute: typeof PortalRouteRoute
+    }
     '/portal/turnos': {
       id: '/portal/turnos'
       path: '/turnos'
@@ -389,11 +408,13 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface PortalRouteRouteChildren {
+  PortalNovedadesRoute: typeof PortalNovedadesRoute
   PortalTurnosRoute: typeof PortalTurnosRoute
   PortalIndexRoute: typeof PortalIndexRoute
 }
 
 const PortalRouteRouteChildren: PortalRouteRouteChildren = {
+  PortalNovedadesRoute: PortalNovedadesRoute,
   PortalTurnosRoute: PortalTurnosRoute,
   PortalIndexRoute: PortalIndexRoute,
 }
