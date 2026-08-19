@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_activity_log: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json | null
+          entity: string | null
+          entity_id: string | null
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json | null
+          entity?: string | null
+          entity_id?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json | null
+          entity?: string | null
+          entity_id?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      app_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
       appointment_messages: {
         Row: {
           appointment_id: string | null
@@ -166,6 +214,175 @@ export type Database = {
           },
         ]
       }
+      content: {
+        Row: {
+          body: string | null
+          category: string
+          created_at: string
+          description: string | null
+          featured: boolean
+          id: string
+          image_url: string | null
+          notify: boolean
+          published: boolean
+          published_at: string | null
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          body?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          image_url?: string | null
+          notify?: boolean
+          published?: boolean
+          published_at?: string | null
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          body?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          image_url?: string | null
+          notify?: boolean
+          published?: boolean
+          published_at?: string | null
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      content_views: {
+        Row: {
+          content_id: string
+          id: string
+          patient_id: string
+          viewed_at: string
+        }
+        Insert: {
+          content_id: string
+          id?: string
+          patient_id: string
+          viewed_at?: string
+        }
+        Update: {
+          content_id?: string
+          id?: string
+          patient_id?: string
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_views_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "content"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_views_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          is_read: boolean
+          link: string | null
+          message: string
+          patient_id: string
+          related_id: string | null
+          title: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_read?: boolean
+          link?: string | null
+          message: string
+          patient_id: string
+          related_id?: string | null
+          title: string
+          type?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_read?: boolean
+          link?: string | null
+          message?: string
+          patient_id?: string
+          related_id?: string | null
+          title?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patient_accounts: {
+        Row: {
+          account_status: string
+          created_at: string
+          email: string | null
+          id: string
+          patient_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_status?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          patient_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_status?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          patient_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patient_accounts_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: true
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       patient_status_history: {
         Row: {
           created_at: string
@@ -211,8 +428,10 @@ export type Database = {
           address: string | null
           archived: boolean
           birth_date: string | null
+          city: string | null
           created_at: string
           document_number: string | null
+          email: string | null
           first_consultation_date: string | null
           first_name: string
           full_name: string | null
@@ -222,6 +441,7 @@ export type Database = {
           next_review_reason: string | null
           next_review_time: string | null
           notes: string | null
+          origin: string
           phone: string | null
           status: string
           updated_at: string
@@ -233,8 +453,10 @@ export type Database = {
           address?: string | null
           archived?: boolean
           birth_date?: string | null
+          city?: string | null
           created_at?: string
           document_number?: string | null
+          email?: string | null
           first_consultation_date?: string | null
           first_name: string
           full_name?: string | null
@@ -244,6 +466,7 @@ export type Database = {
           next_review_reason?: string | null
           next_review_time?: string | null
           notes?: string | null
+          origin?: string
           phone?: string | null
           status?: string
           updated_at?: string
@@ -255,8 +478,10 @@ export type Database = {
           address?: string | null
           archived?: boolean
           birth_date?: string | null
+          city?: string | null
           created_at?: string
           document_number?: string | null
+          email?: string | null
           first_consultation_date?: string | null
           first_name?: string
           full_name?: string | null
@@ -266,6 +491,7 @@ export type Database = {
           next_review_reason?: string | null
           next_review_time?: string | null
           notes?: string | null
+          origin?: string
           phone?: string | null
           status?: string
           updated_at?: string
@@ -290,6 +516,44 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      push_devices: {
+        Row: {
+          active: boolean
+          created_at: string
+          device_token: string
+          id: string
+          patient_id: string
+          platform: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          device_token: string
+          id?: string
+          patient_id: string
+          platform?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          device_token?: string
+          id?: string
+          patient_id?: string
+          platform?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "push_devices_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reviews: {
         Row: {
@@ -351,15 +615,64 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      current_patient_id: { Args: never; Returns: string }
+      generate_appointment_reminders: { Args: never; Returns: number }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
+      patient_exists: {
+        Args: { _document: string; _phone: string }
+        Returns: boolean
+      }
+      register_patient_account: {
+        Args: {
+          _address?: string
+          _birth_date: string
+          _city?: string
+          _document_number: string
+          _email?: string
+          _first_name: string
+          _last_name: string
+          _notes?: string
+          _phone: string
+          _whatsapp: string
+        }
+        Returns: string
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "recepcion" | "paciente"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -486,6 +799,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "recepcion", "paciente"],
+    },
   },
 } as const

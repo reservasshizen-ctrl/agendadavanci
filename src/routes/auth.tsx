@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
@@ -119,6 +119,12 @@ function AuthPage() {
         </form>
         <p className="mt-6 text-center text-xs text-muted-foreground">
           Acceso restringido al personal autorizado de Centro SNS.
+        </p>
+        <p className="mt-2 text-center text-xs text-muted-foreground">
+          ¿Sos paciente?{" "}
+          <Link to="/acceso-paciente" className="underline">
+            Ingresá al Portal del Paciente
+          </Link>
         </p>
       </div>
     </main>

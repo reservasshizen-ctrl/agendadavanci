@@ -11,17 +11,28 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AccesoPacienteRouteImport } from './routes/acceso-paciente'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as PortalRouteRouteImport } from './routes/portal/route'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
 import { Route as AuthenticatedConfiguracionRouteImport } from './routes/_authenticated/configuracion'
+import { Route as AuthenticatedContenidoRouteImport } from './routes/_authenticated/contenido'
 import { Route as AuthenticatedCumpleanosRouteImport } from './routes/_authenticated/cumpleanos'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedFaltasRouteImport } from './routes/_authenticated/faltas'
 import { Route as AuthenticatedHistorialRouteImport } from './routes/_authenticated/historial'
+import { Route as AuthenticatedNotificarRouteImport } from './routes/_authenticated/notificar'
 import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
+import { Route as PortalIndexRouteImport } from './routes/portal/index'
+import { Route as PortalCuentaRouteImport } from './routes/portal/cuenta'
+import { Route as PortalNotificacionesRouteImport } from './routes/portal/notificaciones'
+import { Route as PortalNovedadesRouteImport } from './routes/portal/novedades'
+import { Route as PortalTurnosRouteImport } from './routes/portal/turnos'
+import { Route as PortalVideosRouteImport } from './routes/portal/videos'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes.index'
 import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes.$id'
+import { Route as ApiPublicRecordatoriosRouteImport } from './routes/api/public/recordatorios'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -32,9 +43,19 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccesoPacienteRoute = AccesoPacienteRouteImport.update({
+  id: '/acceso-paciente',
+  path: '/acceso-paciente',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalRouteRoute = PortalRouteRouteImport.update({
+  id: '/portal',
+  path: '/portal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
@@ -48,6 +69,11 @@ const AuthenticatedConfiguracionRoute =
     path: '/configuracion',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedContenidoRoute = AuthenticatedContenidoRouteImport.update({
+  id: '/contenido',
+  path: '/contenido',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedCumpleanosRoute = AuthenticatedCumpleanosRouteImport.update({
   id: '/cumpleanos',
   path: '/cumpleanos',
@@ -68,6 +94,11 @@ const AuthenticatedHistorialRoute = AuthenticatedHistorialRouteImport.update({
   path: '/historial',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNotificarRoute = AuthenticatedNotificarRouteImport.update({
+  id: '/notificar',
+  path: '/notificar',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPendientesRoute = AuthenticatedPendientesRouteImport.update({
   id: '/pendientes',
   path: '/pendientes',
@@ -77,6 +108,36 @@ const AuthenticatedRevisionesRoute = AuthenticatedRevisionesRouteImport.update({
   id: '/revisiones',
   path: '/revisiones',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
+const PortalCuentaRoute = PortalCuentaRouteImport.update({
+  id: '/cuenta',
+  path: '/cuenta',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
+const PortalNotificacionesRoute = PortalNotificacionesRouteImport.update({
+  id: '/notificaciones',
+  path: '/notificaciones',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
+const PortalNovedadesRoute = PortalNovedadesRouteImport.update({
+  id: '/novedades',
+  path: '/novedades',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
+const PortalTurnosRoute = PortalTurnosRouteImport.update({
+  id: '/turnos',
+  path: '/turnos',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
+const PortalVideosRoute = PortalVideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => PortalRouteRoute,
 } as any)
 const AuthenticatedPacientesIndexRoute =
   AuthenticatedPacientesIndexRouteImport.update({
@@ -90,101 +151,173 @@ const AuthenticatedPacientesIdRoute =
     path: '/pacientes/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicRecordatoriosRoute = ApiPublicRecordatoriosRouteImport.update({
+  id: '/api/public/recordatorios',
+  path: '/api/public/recordatorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/portal': typeof PortalRouteRouteWithChildren
+  '/acceso-paciente': typeof AccesoPacienteRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/configuracion': typeof AuthenticatedConfiguracionRoute
+  '/contenido': typeof AuthenticatedContenidoRoute
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
   '/historial': typeof AuthenticatedHistorialRoute
+  '/notificar': typeof AuthenticatedNotificarRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/cuenta': typeof PortalCuentaRoute
+  '/portal/notificaciones': typeof PortalNotificacionesRoute
+  '/portal/novedades': typeof PortalNovedadesRoute
+  '/portal/turnos': typeof PortalTurnosRoute
+  '/portal/videos': typeof PortalVideosRoute
+  '/portal/': typeof PortalIndexRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/api/public/recordatorios': typeof ApiPublicRecordatoriosRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/acceso-paciente': typeof AccesoPacienteRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/configuracion': typeof AuthenticatedConfiguracionRoute
+  '/contenido': typeof AuthenticatedContenidoRoute
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
   '/historial': typeof AuthenticatedHistorialRoute
+  '/notificar': typeof AuthenticatedNotificarRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/cuenta': typeof PortalCuentaRoute
+  '/portal/notificaciones': typeof PortalNotificacionesRoute
+  '/portal/novedades': typeof PortalNovedadesRoute
+  '/portal/turnos': typeof PortalTurnosRoute
+  '/portal/videos': typeof PortalVideosRoute
+  '/portal': typeof PortalIndexRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/api/public/recordatorios': typeof ApiPublicRecordatoriosRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/portal': typeof PortalRouteRouteWithChildren
+  '/acceso-paciente': typeof AccesoPacienteRoute
   '/auth': typeof AuthRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
   '/_authenticated/configuracion': typeof AuthenticatedConfiguracionRoute
+  '/_authenticated/contenido': typeof AuthenticatedContenidoRoute
   '/_authenticated/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/faltas': typeof AuthenticatedFaltasRoute
   '/_authenticated/historial': typeof AuthenticatedHistorialRoute
+  '/_authenticated/notificar': typeof AuthenticatedNotificarRoute
   '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
+  '/portal/cuenta': typeof PortalCuentaRoute
+  '/portal/notificaciones': typeof PortalNotificacionesRoute
+  '/portal/novedades': typeof PortalNovedadesRoute
+  '/portal/turnos': typeof PortalTurnosRoute
+  '/portal/videos': typeof PortalVideosRoute
+  '/portal/': typeof PortalIndexRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/api/public/recordatorios': typeof ApiPublicRecordatoriosRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/portal'
+    | '/acceso-paciente'
     | '/auth'
     | '/agenda'
     | '/configuracion'
+    | '/contenido'
     | '/cumpleanos'
     | '/dashboard'
     | '/faltas'
     | '/historial'
+    | '/notificar'
     | '/pendientes'
     | '/revisiones'
+    | '/portal/cuenta'
+    | '/portal/notificaciones'
+    | '/portal/novedades'
+    | '/portal/turnos'
+    | '/portal/videos'
+    | '/portal/'
     | '/pacientes/$id'
+    | '/api/public/recordatorios'
     | '/pacientes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/acceso-paciente'
     | '/auth'
     | '/agenda'
     | '/configuracion'
+    | '/contenido'
     | '/cumpleanos'
     | '/dashboard'
     | '/faltas'
     | '/historial'
+    | '/notificar'
     | '/pendientes'
     | '/revisiones'
+    | '/portal/cuenta'
+    | '/portal/notificaciones'
+    | '/portal/novedades'
+    | '/portal/turnos'
+    | '/portal/videos'
+    | '/portal'
     | '/pacientes/$id'
+    | '/api/public/recordatorios'
     | '/pacientes'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/portal'
+    | '/acceso-paciente'
     | '/auth'
     | '/_authenticated/agenda'
     | '/_authenticated/configuracion'
+    | '/_authenticated/contenido'
     | '/_authenticated/cumpleanos'
     | '/_authenticated/dashboard'
     | '/_authenticated/faltas'
     | '/_authenticated/historial'
+    | '/_authenticated/notificar'
     | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
+    | '/portal/cuenta'
+    | '/portal/notificaciones'
+    | '/portal/novedades'
+    | '/portal/turnos'
+    | '/portal/videos'
+    | '/portal/'
     | '/_authenticated/pacientes/$id'
+    | '/api/public/recordatorios'
     | '/_authenticated/pacientes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  PortalRouteRoute: typeof PortalRouteRouteWithChildren
+  AccesoPacienteRoute: typeof AccesoPacienteRoute
   AuthRoute: typeof AuthRoute
+  ApiPublicRecordatoriosRoute: typeof ApiPublicRecordatoriosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -203,11 +336,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acceso-paciente': {
+      id: '/acceso-paciente'
+      path: '/acceso-paciente'
+      fullPath: '/acceso-paciente'
+      preLoaderRoute: typeof AccesoPacienteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/agenda': {
@@ -222,6 +369,13 @@ declare module '@tanstack/react-router' {
       path: '/configuracion'
       fullPath: '/configuracion'
       preLoaderRoute: typeof AuthenticatedConfiguracionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/contenido': {
+      id: '/_authenticated/contenido'
+      path: '/contenido'
+      fullPath: '/contenido'
+      preLoaderRoute: typeof AuthenticatedContenidoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/cumpleanos': {
@@ -252,6 +406,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistorialRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/notificar': {
+      id: '/_authenticated/notificar'
+      path: '/notificar'
+      fullPath: '/notificar'
+      preLoaderRoute: typeof AuthenticatedNotificarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/pendientes': {
       id: '/_authenticated/pendientes'
       path: '/pendientes'
@@ -265,6 +426,48 @@ declare module '@tanstack/react-router' {
       fullPath: '/revisiones'
       preLoaderRoute: typeof AuthenticatedRevisionesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof PortalRouteRoute
+    }
+    '/portal/cuenta': {
+      id: '/portal/cuenta'
+      path: '/cuenta'
+      fullPath: '/portal/cuenta'
+      preLoaderRoute: typeof PortalCuentaRouteImport
+      parentRoute: typeof PortalRouteRoute
+    }
+    '/portal/notificaciones': {
+      id: '/portal/notificaciones'
+      path: '/notificaciones'
+      fullPath: '/portal/notificaciones'
+      preLoaderRoute: typeof PortalNotificacionesRouteImport
+      parentRoute: typeof PortalRouteRoute
+    }
+    '/portal/novedades': {
+      id: '/portal/novedades'
+      path: '/novedades'
+      fullPath: '/portal/novedades'
+      preLoaderRoute: typeof PortalNovedadesRouteImport
+      parentRoute: typeof PortalRouteRoute
+    }
+    '/portal/turnos': {
+      id: '/portal/turnos'
+      path: '/turnos'
+      fullPath: '/portal/turnos'
+      preLoaderRoute: typeof PortalTurnosRouteImport
+      parentRoute: typeof PortalRouteRoute
+    }
+    '/portal/videos': {
+      id: '/portal/videos'
+      path: '/videos'
+      fullPath: '/portal/videos'
+      preLoaderRoute: typeof PortalVideosRouteImport
+      parentRoute: typeof PortalRouteRoute
     }
     '/_authenticated/pacientes/': {
       id: '/_authenticated/pacientes/'
@@ -280,16 +483,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPacientesIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/recordatorios': {
+      id: '/api/public/recordatorios'
+      path: '/api/public/recordatorios'
+      fullPath: '/api/public/recordatorios'
+      preLoaderRoute: typeof ApiPublicRecordatoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
   AuthenticatedConfiguracionRoute: typeof AuthenticatedConfiguracionRoute
+  AuthenticatedContenidoRoute: typeof AuthenticatedContenidoRoute
   AuthenticatedCumpleanosRoute: typeof AuthenticatedCumpleanosRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFaltasRoute: typeof AuthenticatedFaltasRoute
   AuthenticatedHistorialRoute: typeof AuthenticatedHistorialRoute
+  AuthenticatedNotificarRoute: typeof AuthenticatedNotificarRoute
   AuthenticatedPendientesRoute: typeof AuthenticatedPendientesRoute
   AuthenticatedRevisionesRoute: typeof AuthenticatedRevisionesRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRoute
@@ -299,10 +511,12 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
   AuthenticatedConfiguracionRoute: AuthenticatedConfiguracionRoute,
+  AuthenticatedContenidoRoute: AuthenticatedContenidoRoute,
   AuthenticatedCumpleanosRoute: AuthenticatedCumpleanosRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFaltasRoute: AuthenticatedFaltasRoute,
   AuthenticatedHistorialRoute: AuthenticatedHistorialRoute,
+  AuthenticatedNotificarRoute: AuthenticatedNotificarRoute,
   AuthenticatedPendientesRoute: AuthenticatedPendientesRoute,
   AuthenticatedRevisionesRoute: AuthenticatedRevisionesRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRoute,
@@ -312,10 +526,35 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface PortalRouteRouteChildren {
+  PortalCuentaRoute: typeof PortalCuentaRoute
+  PortalNotificacionesRoute: typeof PortalNotificacionesRoute
+  PortalNovedadesRoute: typeof PortalNovedadesRoute
+  PortalTurnosRoute: typeof PortalTurnosRoute
+  PortalVideosRoute: typeof PortalVideosRoute
+  PortalIndexRoute: typeof PortalIndexRoute
+}
+
+const PortalRouteRouteChildren: PortalRouteRouteChildren = {
+  PortalCuentaRoute: PortalCuentaRoute,
+  PortalNotificacionesRoute: PortalNotificacionesRoute,
+  PortalNovedadesRoute: PortalNovedadesRoute,
+  PortalTurnosRoute: PortalTurnosRoute,
+  PortalVideosRoute: PortalVideosRoute,
+  PortalIndexRoute: PortalIndexRoute,
+}
+
+const PortalRouteRouteWithChildren = PortalRouteRoute._addFileChildren(
+  PortalRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  PortalRouteRoute: PortalRouteRouteWithChildren,
+  AccesoPacienteRoute: AccesoPacienteRoute,
   AuthRoute: AuthRoute,
+  ApiPublicRecordatoriosRoute: ApiPublicRecordatoriosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
