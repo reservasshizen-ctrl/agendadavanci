@@ -84,6 +84,10 @@ function AccesoPaciente() {
       toast.error("Completá nombre, apellido, cédula y fecha de nacimiento.");
       return;
     }
+    if (onlyDigits(phone).length < 6) {
+      toast.error("Ingresá un número de teléfono válido.");
+      return;
+    }
     setLoading(true);
     try {
       const email = docEmail(cedula);
