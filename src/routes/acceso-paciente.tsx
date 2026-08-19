@@ -105,23 +105,15 @@ function AccesoPaciente() {
         },
       });
 
-      if (signUpError) {
-        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-        if (signInError) {
-          toast.error("Esa cédula ya está registrada. Ingresá desde “Ya tengo cuenta”.");
-          setMode("login");
-          return;
-        }
-        toast.info("Ya tenías una cuenta con esa cédula: iniciamos tu sesión.");
-        navigate({ to: "/portal" });
-        return;
-      }
-
       const { data: session } = await supabase.auth.getSession();
       if (!session.session) {
         const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
         if (signInError) {
-          toast.error("Tu cuenta fue creada. Volvé a ingresar con tu número de cédula.");
+          toast.error(
+            signUpError
+              ? "Esa cédula ya está registrada con otros datos. Ingresá desde “Ya tengo cuenta”."
+              : "Tu cuenta fue creada. Volvé a ingresar con tu número de cédula.",
+          );
           setMode("login");
           return;
         }
@@ -143,8 +135,9 @@ function AccesoPaciente() {
         throw rpcError;
       }
 
-      toast.success("¡Listo! Tu cuenta fue creada.");
+      toast.success(signUpError ? "Ya tenías una cuenta: iniciamos tu sesión." : "¡Listo! Tu cuenta fue creada.");
       navigate({ to: "/portal" });
+
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "No pudimos crear tu cuenta");
     } finally {
