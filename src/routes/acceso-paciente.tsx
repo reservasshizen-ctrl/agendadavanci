@@ -168,10 +168,10 @@ function AccesoPaciente() {
         _phone: form.phone.trim(),
         _whatsapp: form.whatsapp.trim(),
         _birth_date: form.birth_date,
-        _email: form.email.trim() || undefined,
-        _address: form.address.trim() || undefined,
-        _city: form.city.trim() || undefined,
-        _notes: form.notes.trim() || undefined,
+        ...(form.email.trim() ? { _email: form.email.trim() } : {}),
+        ...(form.address.trim() ? { _address: form.address.trim() } : {}),
+        ...(form.city.trim() ? { _city: form.city.trim() } : {}),
+        ...(form.notes.trim() ? { _notes: form.notes.trim() } : {}),
       });
       if (rpcError) {
         if (rpcError.message.includes("DUPLICADO")) {
