@@ -37,6 +37,7 @@ function AccesoPaciente() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [phone, setPhone] = useState("");
 
   useEffect(() => {
     void (async () => {
