@@ -70,6 +70,18 @@ function AccesoPaciente() {
         setMode("registro");
         return;
       }
+      const { data: me } = await supabase.auth.getUser();
+      const { data: account } = await supabase
+        .from("patient_accounts")
+        .select("id")
+        .eq("user_id", me.user?.id ?? "")
+        .maybeSingle();
+      if (!account) {
+        toast.info("Necesitamos completar tus datos para activar tu portal.");
+        setMode("registro");
+        setDoc(cedula);
+        return;
+      }
       toast.success("¡Bienvenido de vuelta!");
       navigate({ to: "/portal" });
     } finally {
