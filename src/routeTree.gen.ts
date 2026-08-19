@@ -25,6 +25,7 @@ import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authentic
 import { Route as PortalIndexRouteImport } from './routes/portal/index'
 import { Route as PortalNovedadesRouteImport } from './routes/portal/novedades'
 import { Route as PortalTurnosRouteImport } from './routes/portal/turnos'
+import { Route as PortalVideosRouteImport } from './routes/portal/videos'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes.index'
 import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes.$id'
 
@@ -108,6 +109,11 @@ const PortalTurnosRoute = PortalTurnosRouteImport.update({
   path: '/turnos',
   getParentRoute: () => PortalRouteRoute,
 } as any)
+const PortalVideosRoute = PortalVideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
 const AuthenticatedPacientesIndexRoute =
   AuthenticatedPacientesIndexRouteImport.update({
     id: '/pacientes/',
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/revisiones': typeof AuthenticatedRevisionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
+  '/portal/videos': typeof PortalVideosRoute
   '/portal/': typeof PortalIndexRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/revisiones': typeof AuthenticatedRevisionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
+  '/portal/videos': typeof PortalVideosRoute
   '/portal': typeof PortalIndexRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
   '/portal/turnos': typeof PortalTurnosRoute
+  '/portal/videos': typeof PortalVideosRoute
   '/portal/': typeof PortalIndexRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
@@ -196,6 +205,7 @@ export interface FileRouteTypes {
     | '/revisiones'
     | '/portal/novedades'
     | '/portal/turnos'
+    | '/portal/videos'
     | '/portal/'
     | '/pacientes/$id'
     | '/pacientes/'
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/revisiones'
     | '/portal/novedades'
     | '/portal/turnos'
+    | '/portal/videos'
     | '/portal'
     | '/pacientes/$id'
     | '/pacientes'
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
     | '/_authenticated/revisiones'
     | '/portal/novedades'
     | '/portal/turnos'
+    | '/portal/videos'
     | '/portal/'
     | '/_authenticated/pacientes/$id'
     | '/_authenticated/pacientes/'
@@ -361,6 +373,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalTurnosRouteImport
       parentRoute: typeof PortalRouteRoute
     }
+    '/portal/videos': {
+      id: '/portal/videos'
+      path: '/videos'
+      fullPath: '/portal/videos'
+      preLoaderRoute: typeof PortalVideosRouteImport
+      parentRoute: typeof PortalRouteRoute
+    }
     '/_authenticated/pacientes/': {
       id: '/_authenticated/pacientes/'
       path: '/pacientes'
@@ -410,12 +429,14 @@ const AuthenticatedRouteRouteWithChildren =
 interface PortalRouteRouteChildren {
   PortalNovedadesRoute: typeof PortalNovedadesRoute
   PortalTurnosRoute: typeof PortalTurnosRoute
+  PortalVideosRoute: typeof PortalVideosRoute
   PortalIndexRoute: typeof PortalIndexRoute
 }
 
 const PortalRouteRouteChildren: PortalRouteRouteChildren = {
   PortalNovedadesRoute: PortalNovedadesRoute,
   PortalTurnosRoute: PortalTurnosRoute,
+  PortalVideosRoute: PortalVideosRoute,
   PortalIndexRoute: PortalIndexRoute,
 }
 
