@@ -132,7 +132,8 @@ function AccesoPaciente() {
         _last_name: lastName.trim(),
         _document_number: cedula,
         _birth_date: birthDate,
-      });
+        _phone: phone.trim(),
+      } as never);
       if (rpcError) {
         if (rpcError.message.includes("YA_REGISTRADO")) {
           toast.error("Esa cédula ya tiene una cuenta activa. Ingresá desde “Ya tengo cuenta”.");
