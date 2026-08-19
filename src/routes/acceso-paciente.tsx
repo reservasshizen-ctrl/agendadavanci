@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { HeartPulse } from "lucide-react";
 
@@ -15,7 +14,7 @@ export const Route = createFileRoute("/acceso-paciente")({
       { title: "Portal del Paciente | Centro SNS" },
       {
         name: "description",
-        content: "Creá tu cuenta o ingresá al Portal del Paciente de Centro SNS para ver tus turnos y novedades.",
+        content: "Creá tu cuenta o ingresá con tu número de cédula al Portal del Paciente de Centro SNS.",
       },
       { property: "og:title", content: "Portal del Paciente | Centro SNS" },
       { property: "og:description", content: "Tus turnos, recordatorios y novedades de Centro SNS en tu celular." },
@@ -26,73 +25,52 @@ export const Route = createFileRoute("/acceso-paciente")({
   component: AccesoPaciente,
 });
 
-type Form = {
-  first_name: string;
-  last_name: string;
-  document_number: string;
-  phone: string;
-  whatsapp: string;
-  birth_date: string;
-  email: string;
-  password: string;
-  address: string;
-  city: string;
-  notes: string;
-};
-
-const EMPTY: Form = {
-  first_name: "",
-  last_name: "",
-  document_number: "",
-  phone: "",
-  whatsapp: "",
-  birth_date: "",
-  email: "",
-  password: "",
-  address: "",
-  city: "",
-  notes: "",
-};
+const onlyDigits = (v: string) => v.replace(/\D/g, "");
+const docEmail = (doc: string) => `ci${onlyDigits(doc)}@paciente.centrosns.app`;
+const docPassword = (doc: string) => `SNS-portal-${onlyDigits(doc)}`;
 
 function AccesoPaciente() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"login" | "registro">("login");
-  const [form, setForm] = useState<Form>(EMPTY);
   const [loading, setLoading] = useState(false);
-  const [hasSession, setHasSession] = useState(false);
+  const [doc, setDoc] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [birthDate, setBirthDate] = useState("");
 
   useEffect(() => {
     void (async () => {
       const { data } = await supabase.auth.getUser();
       if (!data.user) return;
-      setHasSession(true);
       const { data: account } = await supabase
         .from("patient_accounts")
         .select("id")
         .eq("user_id", data.user.id)
         .maybeSingle();
       if (account) navigate({ to: "/portal" });
-      else {
-        setMode("registro");
-        setForm((f) => ({ ...f, email: data.user?.email ?? "" }));
-      }
     })();
   }, [navigate]);
 
-  const set = (k: keyof Form, v: string) => setForm((f) => ({ ...f, [k]: v }));
-
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
+    const cedula = onlyDigits(doc);
+    if (cedula.length < 4) {
+      toast.error("Ingresá tu número de cédula.");
+      return;
+    }
     setLoading(true);
     try {
       const { error } = await supabase.auth.signInWithPassword({
-        email: form.email.trim(),
-        password: form.password,
+        email: docEmail(cedula),
+        password: docPassword(cedula),
       });
-      if (error) throw error;
+      if (error) {
+        toast.error("No encontramos una cuenta con esa cédula. Creá tu cuenta primero.");
+        setMode("registro");
+        return;
+      }
+      toast.success("¡Bienvenido de vuelta!");
       navigate({ to: "/portal" });
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "No pudimos iniciar tu sesión");
     } finally {
       setLoading(false);
     }
@@ -100,87 +78,65 @@ function AccesoPaciente() {
 
   const registrar = async (e: React.FormEvent) => {
     e.preventDefault();
-    const required: [keyof Form, string][] = [
-      ["first_name", "Nombre"],
-      ["last_name", "Apellido"],
-      ["document_number", "Número de cédula"],
-      ["phone", "Número de teléfono"],
-      ["whatsapp", "Número de WhatsApp"],
-      ["birth_date", "Fecha de nacimiento"],
-    ];
-    for (const [key, label] of required) {
-      if (!form[key].trim()) {
-        toast.error(`Completá: ${label}`);
-        return;
-      }
-    }
-    if (!hasSession && (!form.email.trim() || form.password.length < 6)) {
-      toast.error("Necesitamos tu correo y una contraseña de al menos 6 caracteres para crear tu cuenta.");
+    const cedula = onlyDigits(doc);
+    if (!firstName.trim() || !lastName.trim() || cedula.length < 4 || !birthDate) {
+      toast.error("Completá nombre, apellido, cédula y fecha de nacimiento.");
       return;
     }
-
     setLoading(true);
     try {
-      const { data: exists, error: existsError } = await supabase.rpc("patient_exists", {
-        _document: form.document_number.trim(),
-        _phone: form.whatsapp.trim() || form.phone.trim(),
+      const email = docEmail(cedula);
+      const password = docPassword(cedula);
+
+      const { error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/portal`,
+          data: {
+            display_name: `${firstName.trim()} ${lastName.trim()}`,
+            portal_role: "paciente",
+          },
+        },
       });
-      if (existsError) throw existsError;
-      if (exists && !hasSession) {
-        toast.error("Ya encontramos un registro asociado a estos datos. Iniciá sesión para acceder a tu información.");
-        setMode("login");
-        setLoading(false);
+
+      if (signUpError) {
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+        if (signInError) {
+          toast.error("Esa cédula ya está registrada. Ingresá desde “Ya tengo cuenta”.");
+          setMode("login");
+          return;
+        }
+        toast.info("Ya tenías una cuenta con esa cédula: iniciamos tu sesión.");
+        navigate({ to: "/portal" });
         return;
       }
 
-      if (!hasSession) {
-        const { error } = await supabase.auth.signUp({
-          email: form.email.trim(),
-          password: form.password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/portal`,
-            data: {
-              display_name: `${form.first_name} ${form.last_name}`.trim(),
-              portal_role: "paciente",
-            },
-          },
-        });
-        if (error) throw error;
-        const { data: session } = await supabase.auth.getSession();
-        if (!session.session) {
-          const { error: signInError } = await supabase.auth.signInWithPassword({
-            email: form.email.trim(),
-            password: form.password,
-          });
-          if (signInError) {
-            toast.success("Cuenta creada. Revisá tu correo para confirmarla y luego ingresá.");
-            setMode("login");
-            setLoading(false);
-            return;
-          }
+      const { data: session } = await supabase.auth.getSession();
+      if (!session.session) {
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+        if (signInError) {
+          toast.error("Tu cuenta fue creada. Volvé a ingresar con tu número de cédula.");
+          setMode("login");
+          return;
         }
       }
 
-      const { error: rpcError } = await supabase.rpc("register_patient_account", {
-        _first_name: form.first_name.trim(),
-        _last_name: form.last_name.trim(),
-        _document_number: form.document_number.trim(),
-        _phone: form.phone.trim(),
-        _whatsapp: form.whatsapp.trim(),
-        _birth_date: form.birth_date,
-        ...(form.email.trim() ? { _email: form.email.trim() } : {}),
-        ...(form.address.trim() ? { _address: form.address.trim() } : {}),
-        ...(form.city.trim() ? { _city: form.city.trim() } : {}),
-        ...(form.notes.trim() ? { _notes: form.notes.trim() } : {}),
+      const { error: rpcError } = await supabase.rpc("register_patient_portal", {
+        _first_name: firstName.trim(),
+        _last_name: lastName.trim(),
+        _document_number: cedula,
+        _birth_date: birthDate,
       });
       if (rpcError) {
-        if (rpcError.message.includes("DUPLICADO")) {
-          toast.error("Ya encontramos un registro asociado a estos datos. Iniciá sesión para acceder a tu información.");
+        if (rpcError.message.includes("YA_REGISTRADO")) {
+          toast.error("Esa cédula ya tiene una cuenta activa. Ingresá desde “Ya tengo cuenta”.");
           setMode("login");
           return;
         }
         throw rpcError;
       }
+
       toast.success("¡Listo! Tu cuenta fue creada.");
       navigate({ to: "/portal" });
     } catch (err) {
@@ -221,91 +177,44 @@ function AccesoPaciente() {
 
           {mode === "login" ? (
             <form onSubmit={login} className="space-y-4">
-              <Field label="Correo electrónico">
-                <Input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} maxLength={255} />
-              </Field>
-              <Field label="Contraseña">
+              <Field label="Número de cédula">
                 <Input
-                  type="password"
-                  value={form.password}
-                  onChange={(e) => set("password", e.target.value)}
-                  maxLength={72}
+                  value={doc}
+                  onChange={(e) => setDoc(e.target.value)}
+                  maxLength={20}
+                  inputMode="numeric"
+                  placeholder="Ej: 4567890"
                 />
               </Field>
               <Button type="submit" className="w-full" disabled={loading}>
                 Ingresar
               </Button>
+              <p className="text-center text-xs text-muted-foreground">
+                Ingresás solamente con tu número de cédula.
+              </p>
             </form>
           ) : (
             <form onSubmit={registrar} className="space-y-4">
-              {hasSession && (
-                <p className="rounded-lg bg-muted p-3 text-xs text-muted-foreground">
-                  Completá tus datos para terminar de crear tu ficha en Centro SNS.
-                </p>
-              )}
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Nombre *">
-                  <Input value={form.first_name} onChange={(e) => set("first_name", e.target.value)} maxLength={60} />
+                  <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength={60} />
                 </Field>
                 <Field label="Apellido *">
-                  <Input value={form.last_name} onChange={(e) => set("last_name", e.target.value)} maxLength={60} />
+                  <Input value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength={60} />
                 </Field>
               </div>
               <Field label="Número de cédula *">
-                <Input
-                  value={form.document_number}
-                  onChange={(e) => set("document_number", e.target.value)}
-                  maxLength={20}
-                  inputMode="numeric"
-                />
+                <Input value={doc} onChange={(e) => setDoc(e.target.value)} maxLength={20} inputMode="numeric" />
               </Field>
-              <div className="grid grid-cols-2 gap-3">
-                <Field label="Teléfono *">
-                  <Input value={form.phone} onChange={(e) => set("phone", e.target.value)} maxLength={25} inputMode="tel" />
-                </Field>
-                <Field label="WhatsApp *">
-                  <Input
-                    value={form.whatsapp}
-                    onChange={(e) => set("whatsapp", e.target.value)}
-                    maxLength={25}
-                    inputMode="tel"
-                  />
-                </Field>
-              </div>
               <Field label="Fecha de nacimiento *">
-                <Input type="date" value={form.birth_date} onChange={(e) => set("birth_date", e.target.value)} />
-              </Field>
-              <Field label="Correo electrónico *">
-                <Input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => set("email", e.target.value)}
-                  maxLength={255}
-                  disabled={hasSession}
-                />
-              </Field>
-              {!hasSession && (
-                <Field label="Contraseña *">
-                  <Input
-                    type="password"
-                    value={form.password}
-                    onChange={(e) => set("password", e.target.value)}
-                    maxLength={72}
-                  />
-                </Field>
-              )}
-              <Field label="Dirección">
-                <Input value={form.address} onChange={(e) => set("address", e.target.value)} maxLength={160} />
-              </Field>
-              <Field label="Ciudad">
-                <Input value={form.city} onChange={(e) => set("city", e.target.value)} maxLength={80} />
-              </Field>
-              <Field label="Observaciones">
-                <Textarea value={form.notes} onChange={(e) => set("notes", e.target.value)} maxLength={500} rows={3} />
+                <Input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
               </Field>
               <Button type="submit" className="w-full" disabled={loading}>
-                Crear mi cuenta
+                Registrarme e ingresar
               </Button>
+              <p className="text-center text-xs text-muted-foreground">
+                Después vas a ingresar solamente con tu número de cédula.
+              </p>
             </form>
           )}
         </div>

@@ -670,6 +670,15 @@ export type Database = {
         }
         Returns: string
       }
+      register_patient_portal: {
+        Args: {
+          _birth_date: string
+          _document_number: string
+          _first_name: string
+          _last_name: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       app_role: "admin" | "recepcion" | "paciente"
