@@ -37,6 +37,7 @@ function AccesoPaciente() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [phone, setPhone] = useState("");
 
   useEffect(() => {
     void (async () => {
@@ -83,6 +84,10 @@ function AccesoPaciente() {
       toast.error("Completá nombre, apellido, cédula y fecha de nacimiento.");
       return;
     }
+    if (onlyDigits(phone).length < 6) {
+      toast.error("Ingresá un número de teléfono válido.");
+      return;
+    }
     setLoading(true);
     try {
       const email = docEmail(cedula);
@@ -127,7 +132,8 @@ function AccesoPaciente() {
         _last_name: lastName.trim(),
         _document_number: cedula,
         _birth_date: birthDate,
-      });
+        _phone: phone.trim(),
+      } as never);
       if (rpcError) {
         if (rpcError.message.includes("YA_REGISTRADO")) {
           toast.error("Esa cédula ya tiene una cuenta activa. Ingresá desde “Ya tengo cuenta”.");
@@ -208,6 +214,15 @@ function AccesoPaciente() {
               </Field>
               <Field label="Fecha de nacimiento *">
                 <Input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
+              </Field>
+              <Field label="Número de teléfono *">
+                <Input
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  maxLength={25}
+                  inputMode="tel"
+                  placeholder="Ej: 0981 123456"
+                />
               </Field>
               <Button type="submit" className="w-full" disabled={loading}>
                 Registrarme e ingresar

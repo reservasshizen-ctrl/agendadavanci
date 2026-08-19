@@ -676,6 +676,7 @@ export type Database = {
           _document_number: string
           _first_name: string
           _last_name: string
+          _phone?: string
         }
         Returns: string
       }
