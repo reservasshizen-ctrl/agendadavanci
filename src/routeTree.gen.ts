@@ -21,6 +21,7 @@ import { Route as AuthenticatedCumpleanosRouteImport } from './routes/_authentic
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedFaltasRouteImport } from './routes/_authenticated/faltas'
 import { Route as AuthenticatedHistorialRouteImport } from './routes/_authenticated/historial'
+import { Route as AuthenticatedNotificarRouteImport } from './routes/_authenticated/notificar'
 import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
 import { Route as PortalIndexRouteImport } from './routes/portal/index'
@@ -92,6 +93,11 @@ const AuthenticatedHistorialRoute = AuthenticatedHistorialRouteImport.update({
   path: '/historial',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNotificarRoute = AuthenticatedNotificarRouteImport.update({
+  id: '/notificar',
+  path: '/notificar',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPendientesRoute = AuthenticatedPendientesRouteImport.update({
   id: '/pendientes',
   path: '/pendientes',
@@ -157,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
   '/historial': typeof AuthenticatedHistorialRoute
+  '/notificar': typeof AuthenticatedNotificarRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
   '/portal/cuenta': typeof PortalCuentaRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
   '/historial': typeof AuthenticatedHistorialRoute
+  '/notificar': typeof AuthenticatedNotificarRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
   '/portal/cuenta': typeof PortalCuentaRoute
@@ -204,6 +212,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/faltas': typeof AuthenticatedFaltasRoute
   '/_authenticated/historial': typeof AuthenticatedHistorialRoute
+  '/_authenticated/notificar': typeof AuthenticatedNotificarRoute
   '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
   '/portal/cuenta': typeof PortalCuentaRoute
@@ -229,6 +238,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/faltas'
     | '/historial'
+    | '/notificar'
     | '/pendientes'
     | '/revisiones'
     | '/portal/cuenta'
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/faltas'
     | '/historial'
+    | '/notificar'
     | '/pendientes'
     | '/revisiones'
     | '/portal/cuenta'
@@ -275,6 +286,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/faltas'
     | '/_authenticated/historial'
+    | '/_authenticated/notificar'
     | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
     | '/portal/cuenta'
@@ -381,6 +393,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistorialRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/notificar': {
+      id: '/_authenticated/notificar'
+      path: '/notificar'
+      fullPath: '/notificar'
+      preLoaderRoute: typeof AuthenticatedNotificarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/pendientes': {
       id: '/_authenticated/pendientes'
       path: '/pendientes'
@@ -462,6 +481,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFaltasRoute: typeof AuthenticatedFaltasRoute
   AuthenticatedHistorialRoute: typeof AuthenticatedHistorialRoute
+  AuthenticatedNotificarRoute: typeof AuthenticatedNotificarRoute
   AuthenticatedPendientesRoute: typeof AuthenticatedPendientesRoute
   AuthenticatedRevisionesRoute: typeof AuthenticatedRevisionesRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRoute
@@ -476,6 +496,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFaltasRoute: AuthenticatedFaltasRoute,
   AuthenticatedHistorialRoute: AuthenticatedHistorialRoute,
+  AuthenticatedNotificarRoute: AuthenticatedNotificarRoute,
   AuthenticatedPendientesRoute: AuthenticatedPendientesRoute,
   AuthenticatedRevisionesRoute: AuthenticatedRevisionesRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRoute,

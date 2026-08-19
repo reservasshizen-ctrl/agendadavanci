@@ -22,6 +22,9 @@ export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async () => {
     const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) throw redirect({ to: "/auth" });
+    const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", data.user.id);
+    const isStaff = (roles ?? []).some((r) => r.role === "admin" || r.role === "recepcion");
+    if (!isStaff) throw redirect({ to: "/portal" });
     return { user: data.user };
   },
   component: Shell,
@@ -35,6 +38,8 @@ const nav = [
   { to: "/cumpleanos", label: "Cumpleaños", icon: Cake },
   { to: "/pendientes", label: "Pendientes de envío", icon: Send },
   { to: "/faltas", label: "Faltas / Abandonos", icon: TriangleAlert },
+  { to: "/contenido", label: "Contenido del portal", icon: Newspaper },
+  { to: "/notificar", label: "Enviar notificaciones", icon: Bell },
   { to: "/historial", label: "Historial", icon: History },
   { to: "/configuracion", label: "Configuración", icon: Settings },
 ] as const;
