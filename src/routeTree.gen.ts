@@ -32,6 +32,7 @@ import { Route as PortalTurnosRouteImport } from './routes/portal/turnos'
 import { Route as PortalVideosRouteImport } from './routes/portal/videos'
 import { Route as AuthenticatedPacientesIndexRouteImport } from './routes/_authenticated/pacientes.index'
 import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes.$id'
+import { Route as ApiPublicRecordatoriosRouteImport } from './routes/api/public/recordatorios'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -150,6 +151,11 @@ const AuthenticatedPacientesIdRoute =
     path: '/pacientes/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicRecordatoriosRoute = ApiPublicRecordatoriosRouteImport.update({
+  id: '/api/public/recordatorios',
+  path: '/api/public/recordatorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -173,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/portal/videos': typeof PortalVideosRoute
   '/portal/': typeof PortalIndexRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/api/public/recordatorios': typeof ApiPublicRecordatoriosRoute
   '/pacientes/': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/portal/videos': typeof PortalVideosRoute
   '/portal': typeof PortalIndexRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/api/public/recordatorios': typeof ApiPublicRecordatoriosRoute
   '/pacientes': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRoutesById {
@@ -222,6 +230,7 @@ export interface FileRoutesById {
   '/portal/videos': typeof PortalVideosRoute
   '/portal/': typeof PortalIndexRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
+  '/api/public/recordatorios': typeof ApiPublicRecordatoriosRoute
   '/_authenticated/pacientes/': typeof AuthenticatedPacientesIndexRoute
 }
 export interface FileRouteTypes {
@@ -248,6 +257,7 @@ export interface FileRouteTypes {
     | '/portal/videos'
     | '/portal/'
     | '/pacientes/$id'
+    | '/api/public/recordatorios'
     | '/pacientes/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/portal/videos'
     | '/portal'
     | '/pacientes/$id'
+    | '/api/public/recordatorios'
     | '/pacientes'
   id:
     | '__root__'
@@ -296,6 +307,7 @@ export interface FileRouteTypes {
     | '/portal/videos'
     | '/portal/'
     | '/_authenticated/pacientes/$id'
+    | '/api/public/recordatorios'
     | '/_authenticated/pacientes/'
   fileRoutesById: FileRoutesById
 }
@@ -305,6 +317,7 @@ export interface RootRouteChildren {
   PortalRouteRoute: typeof PortalRouteRouteWithChildren
   AccesoPacienteRoute: typeof AccesoPacienteRoute
   AuthRoute: typeof AuthRoute
+  ApiPublicRecordatoriosRoute: typeof ApiPublicRecordatoriosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -470,6 +483,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPacientesIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/recordatorios': {
+      id: '/api/public/recordatorios'
+      path: '/api/public/recordatorios'
+      fullPath: '/api/public/recordatorios'
+      preLoaderRoute: typeof ApiPublicRecordatoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -534,6 +554,7 @@ const rootRouteChildren: RootRouteChildren = {
   PortalRouteRoute: PortalRouteRouteWithChildren,
   AccesoPacienteRoute: AccesoPacienteRoute,
   AuthRoute: AuthRoute,
+  ApiPublicRecordatoriosRoute: ApiPublicRecordatoriosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
