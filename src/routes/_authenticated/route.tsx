@@ -2,12 +2,14 @@ import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
+  Bell,
   Calendar,
   Cake,
   Gauge,
   History,
   LogOut,
   Menu,
+  Newspaper,
   Send,
   Settings,
   Stethoscope,
