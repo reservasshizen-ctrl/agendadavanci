@@ -17,7 +17,9 @@ const schema = z.object({
   birth_date: z.string().optional(),
   phone: z.string().trim().max(30).optional(),
   whatsapp: z.string().trim().max(30).optional(),
+  email: z.string().trim().max(255).optional(),
   address: z.string().trim().max(200).optional(),
+  city: z.string().trim().max(80).optional(),
   first_consultation_date: z.string().optional(),
   status: z.string(),
   notes: z.string().trim().max(2000).optional(),
@@ -30,7 +32,9 @@ const empty = {
   birth_date: "",
   phone: "",
   whatsapp: "",
+  email: "",
   address: "",
+  city: "",
   first_consultation_date: "",
   status: "activo",
   notes: "",
@@ -62,7 +66,9 @@ export function PatientDialog({
             birth_date: patient.birth_date ?? "",
             phone: patient.phone ?? "",
             whatsapp: patient.whatsapp ?? "",
+            email: patient.email ?? "",
             address: patient.address ?? "",
+            city: patient.city ?? "",
             first_consultation_date: patient.first_consultation_date ?? "",
             status: patient.status,
             notes: patient.notes ?? "",
@@ -100,7 +106,9 @@ export function PatientDialog({
         birth_date: form.birth_date || null,
         phone: form.phone.trim() || null,
         whatsapp: form.whatsapp.trim() || null,
+        email: form.email.trim() || null,
         address: form.address.trim() || null,
+        city: form.city.trim() || null,
         first_consultation_date: form.first_consultation_date || null,
         status: form.status,
         notes: form.notes.trim() || null,
@@ -157,6 +165,12 @@ export function PatientDialog({
           <Field label="WhatsApp">
             <Input value={form.whatsapp} onChange={(e) => set("whatsapp", e.target.value)} placeholder="0981123456" maxLength={30} />
           </Field>
+          <Field label="Correo electrónico">
+            <Input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} maxLength={255} />
+          </Field>
+          <Field label="Ciudad">
+            <Input value={form.city} onChange={(e) => set("city", e.target.value)} maxLength={80} />
+          </Field>
           <Field label="Dirección" className="sm:col-span-2">
             <Input value={form.address} onChange={(e) => set("address", e.target.value)} maxLength={200} />
           </Field>
@@ -190,7 +204,7 @@ export function PatientDialog({
             Cancelar
           </Button>
           <Button onClick={submit} disabled={save.isPending}>
-            Guardar
+            {patient ? "Guardar cambios" : "Guardar"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -24,6 +24,64 @@ export function usePatients() {
   });
 }
 
+/** Vista de la ficha: activos, archivados o eliminados. */
+export type PatientScope = "activos" | "archivados" | "eliminados" | "todos";
+
+export const inScope = (p: Patient, scope: PatientScope) => {
+  const deleted = Boolean(p.deleted_at);
+  if (scope === "eliminados") return deleted;
+  if (deleted) return false;
+  if (scope === "archivados") return p.archived;
+  if (scope === "activos") return !p.archived;
+  return true;
+};
+
+export function usePatientAudit(patientId: string) {
+  return useQuery({
+    queryKey: ["patient-audit", patientId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("patient_audit_log")
+        .select("*")
+        .eq("patient_id", patientId)
+        .order("created_at", { ascending: false })
+        .limit(100);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
+
+export function useSetPatientArchived() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: { id: string; archived: boolean }) => {
+      const { error } = await supabase.from("patients").update({ archived: input.archived }).eq("id", input.id);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidateAll(qc),
+  });
+}
+
+/** Eliminación lógica: conserva turnos, revisiones e historial. */
+export function useSetPatientDeleted() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: { id: string; deleted: boolean }) => {
+      const { data: userData } = await supabase.auth.getUser();
+      const { error } = await supabase
+        .from("patients")
+        .update({
+          deleted_at: input.deleted ? new Date().toISOString() : null,
+          deleted_by: input.deleted ? (userData.user?.id ?? null) : null,
+        })
+        .eq("id", input.id);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidateAll(qc),
+  });
+}
+
 export function usePatient(id: string) {
   return useQuery({
     queryKey: ["patient", id],

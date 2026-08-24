@@ -200,3 +200,22 @@ export const openWhatsApp = (phone?: string | null, message?: string) => {
   window.open(url, "_blank", "noopener,noreferrer");
   return true;
 };
+
+/* ---------- Origen del registro ---------- */
+
+export const REGISTRATION_SOURCE_LABELS: Record<string, string> = {
+  admin: "Administración",
+  reception: "Recepción",
+  patient_portal: "Portal del paciente",
+};
+
+export const sourceLabel = (v?: string | null) =>
+  v ? (REGISTRATION_SOURCE_LABELS[v] ?? v.replace(/_/g, " ")) : "Administración";
+
+export const AUDIT_ACTION_LABELS: Record<string, string> = {
+  patient_created: "Ficha creada",
+  patient_updated: "Datos modificados",
+  patient_archived: "Paciente archivado",
+  patient_restored: "Paciente restaurado",
+  patient_deleted: "Paciente eliminado",
+};

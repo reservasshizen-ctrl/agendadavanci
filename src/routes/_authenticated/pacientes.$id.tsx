@@ -1,14 +1,34 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, CalendarPlus, Pencil, Stethoscope } from "lucide-react";
+import { Archive, ArchiveRestore, ArrowLeft, CalendarPlus, Pencil, Stethoscope, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { StatusBadge } from "@/components/StatusBadge";
 import { WaButton } from "@/components/WaButton";
 import { PatientDialog } from "@/components/PatientDialog";
 import { AppointmentDialog } from "@/components/AppointmentDialog";
 import { ReviewDialog } from "@/components/ReviewDialog";
-import { useChangePatientStatus, useLogMessage, usePatient, usePatientTimeline } from "@/lib/db";
 import {
+  useChangePatientStatus,
+  useLogMessage,
+  usePatient,
+  usePatientAudit,
+  usePatientTimeline,
+  useSetPatientArchived,
+  useSetPatientDeleted,
+} from "@/lib/db";
+import { useMyRoles } from "@/lib/portal";
+import {
+  AUDIT_ACTION_LABELS,
   PATIENT_STATUSES,
   age,
   birthdayMessage,
@@ -17,6 +37,7 @@ import {
   formatTime,
   label,
   patientPhone,
+  sourceLabel,
 } from "@/lib/sns";
 import { cn } from "@/lib/utils";
 
@@ -36,11 +57,19 @@ function PatientDetail() {
   const { id } = Route.useParams();
   const { data: patient, isLoading } = usePatient(id);
   const { data: timeline } = usePatientTimeline(id);
+  const { data: audit = [] } = usePatientAudit(id);
+  const { data: roles = [] } = useMyRoles();
+  const isAdmin = roles.includes("admin");
   const changeStatus = useChangePatientStatus();
   const logMessage = useLogMessage();
+  const setArchived = useSetPatientArchived();
+  const setDeleted = useSetPatientDeleted();
+  const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [appt, setAppt] = useState(false);
   const [review, setReview] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmText, setConfirmText] = useState("");
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Cargando ficha...</p>;
   if (!patient) return <p className="text-sm text-muted-foreground">Paciente no encontrado.</p>;
@@ -64,7 +93,14 @@ function PatientDetail() {
           <p className="text-sm text-muted-foreground">
             Tel: {patient.phone || "—"} · WhatsApp: {patient.whatsapp || "—"}
           </p>
-          {patient.address && <p className="text-sm text-muted-foreground">{patient.address}</p>}
+          {patient.email && <p className="text-sm text-muted-foreground">{patient.email}</p>}
+          {(patient.address || patient.city) && (
+            <p className="text-sm text-muted-foreground">{[patient.address, patient.city].filter(Boolean).join(" · ")}</p>
+          )}
+          <p className="text-xs text-muted-foreground">
+            Origen del registro: {sourceLabel(patient.registration_source)}
+            {patient.deleted_at ? " · Eliminado" : patient.archived ? " · Archivado" : ""}
+          </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <WaButton
@@ -82,6 +118,46 @@ function PatientDetail() {
           <Button variant="secondary" onClick={() => setEditing(true)}>
             <Pencil className="mr-2 size-4" /> Editar
           </Button>
+          <Button
+            variant="outline"
+            disabled={setArchived.isPending}
+            onClick={async () => {
+              await setArchived.mutateAsync({ id: patient.id, archived: !patient.archived });
+              toast.success(patient.archived ? "Paciente restaurado" : "Paciente archivado");
+            }}
+          >
+            {patient.archived ? (
+              <>
+                <ArchiveRestore className="mr-2 size-4" /> Restaurar
+              </>
+            ) : (
+              <>
+                <Archive className="mr-2 size-4" /> Archivar
+              </>
+            )}
+          </Button>
+          {isAdmin &&
+            (patient.deleted_at ? (
+              <Button
+                variant="outline"
+                onClick={async () => {
+                  await setDeleted.mutateAsync({ id: patient.id, deleted: false });
+                  toast.success("Paciente recuperado");
+                }}
+              >
+                <ArchiveRestore className="mr-2 size-4" /> Recuperar
+              </Button>
+            ) : (
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  setConfirmText("");
+                  setConfirmDelete(true);
+                }}
+              >
+                <Trash2 className="mr-2 size-4" /> Eliminar
+              </Button>
+            ))}
         </div>
       </header>
 
@@ -148,7 +224,51 @@ function PatientDetail() {
             </li>
           ))}
         </Card>
+
+        <Card title={`Auditoría (${audit.length})`}>
+          {audit.map((a) => (
+            <li key={a.id} className="flex items-center justify-between gap-2 py-2 text-sm">
+              <span>{AUDIT_ACTION_LABELS[a.action] ?? a.action}</span>
+              <span className="text-xs text-muted-foreground">{formatShortDate(a.created_at?.slice(0, 10))}</span>
+            </li>
+          ))}
+        </Card>
       </div>
+
+      <Dialog open={confirmDelete} onOpenChange={setConfirmDelete}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Eliminar paciente</DialogTitle>
+            <DialogDescription>
+              Se ocultará la ficha de {patient.full_name} conservando turnos, revisiones e historial. Escribí ELIMINAR
+              para confirmar.
+            </DialogDescription>
+          </DialogHeader>
+          <Input value={confirmText} onChange={(e) => setConfirmText(e.target.value)} placeholder="ELIMINAR" />
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setConfirmDelete(false)}>
+              Cancelar
+            </Button>
+            <Button
+              variant="destructive"
+              disabled={confirmText.trim().toUpperCase() !== "ELIMINAR" || setDeleted.isPending}
+              onClick={async () => {
+                try {
+                  await setDeleted.mutateAsync({ id: patient.id, deleted: true });
+                  setConfirmDelete(false);
+                  toast.success("Paciente eliminado");
+                  navigate({ to: "/pacientes" });
+                } catch (e) {
+                  toast.error(e instanceof Error ? e.message : "No se pudo eliminar");
+                }
+              }}
+            >
+              Eliminar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
 
       <PatientDialog open={editing} onOpenChange={setEditing} patient={patient} />
       <AppointmentDialog open={appt} onOpenChange={setAppt} patient={patient} />
