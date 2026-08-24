@@ -383,6 +383,44 @@ export type Database = {
           },
         ]
       }
+      patient_audit_log: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          new_data: Json | null
+          patient_id: string
+          previous_data: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          new_data?: Json | null
+          patient_id: string
+          previous_data?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          new_data?: Json | null
+          patient_id?: string
+          previous_data?: Json | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patient_audit_log_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       patient_status_history: {
         Row: {
           created_at: string
@@ -430,6 +468,8 @@ export type Database = {
           birth_date: string | null
           city: string | null
           created_at: string
+          deleted_at: string | null
+          deleted_by: string | null
           document_number: string | null
           email: string | null
           first_consultation_date: string | null
@@ -443,6 +483,7 @@ export type Database = {
           notes: string | null
           origin: string
           phone: string | null
+          registration_source: string
           status: string
           updated_at: string
           whatsapp: string | null
@@ -455,6 +496,8 @@ export type Database = {
           birth_date?: string | null
           city?: string | null
           created_at?: string
+          deleted_at?: string | null
+          deleted_by?: string | null
           document_number?: string | null
           email?: string | null
           first_consultation_date?: string | null
@@ -468,6 +511,7 @@ export type Database = {
           notes?: string | null
           origin?: string
           phone?: string | null
+          registration_source?: string
           status?: string
           updated_at?: string
           whatsapp?: string | null
@@ -480,6 +524,8 @@ export type Database = {
           birth_date?: string | null
           city?: string | null
           created_at?: string
+          deleted_at?: string | null
+          deleted_by?: string | null
           document_number?: string | null
           email?: string | null
           first_consultation_date?: string | null
@@ -493,6 +539,7 @@ export type Database = {
           notes?: string | null
           origin?: string
           phone?: string | null
+          registration_source?: string
           status?: string
           updated_at?: string
           whatsapp?: string | null
@@ -655,25 +702,12 @@ export type Database = {
         Args: { _document: string; _phone: string }
         Returns: boolean
       }
-      register_patient_account: {
+      register_patient_portal: {
         Args: {
           _address?: string
           _birth_date: string
-          _city?: string
           _document_number: string
           _email?: string
-          _first_name: string
-          _last_name: string
-          _notes?: string
-          _phone: string
-          _whatsapp: string
-        }
-        Returns: string
-      }
-      register_patient_portal: {
-        Args: {
-          _birth_date: string
-          _document_number: string
           _first_name: string
           _last_name: string
           _phone?: string
