@@ -214,6 +214,80 @@ export type Database = {
           },
         ]
       }
+      body_legend: {
+        Row: {
+          code: string
+          id: string
+          meaning: string
+          sort: number
+        }
+        Insert: {
+          code: string
+          id?: string
+          meaning: string
+          sort?: number
+        }
+        Update: {
+          code?: string
+          id?: string
+          meaning?: string
+          sort?: number
+        }
+        Relationships: []
+      }
+      clinical_records: {
+        Row: {
+          background: string | null
+          created_at: string
+          id: string
+          indications: string | null
+          marks: Json
+          observations: string | null
+          pathologies: string | null
+          patient_id: string
+          professional: string | null
+          reason: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          background?: string | null
+          created_at?: string
+          id?: string
+          indications?: string | null
+          marks?: Json
+          observations?: string | null
+          pathologies?: string | null
+          patient_id: string
+          professional?: string | null
+          reason?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          background?: string | null
+          created_at?: string
+          id?: string
+          indications?: string | null
+          marks?: Json
+          observations?: string | null
+          pathologies?: string | null
+          patient_id?: string
+          professional?: string | null
+          reason?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_records_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: true
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content: {
         Row: {
           body: string | null
@@ -546,6 +620,83 @@ export type Database = {
         }
         Relationships: []
       }
+      product_ingredients: {
+        Row: {
+          cost: number
+          id: string
+          name: string
+          product_id: string
+          quantity: number
+          unit: string
+        }
+        Insert: {
+          cost?: number
+          id?: string
+          name: string
+          product_id: string
+          quantity?: number
+          unit?: string
+        }
+        Update: {
+          cost?: number
+          id?: string
+          name?: string
+          product_id?: string
+          quantity?: number
+          unit?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_ingredients_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          other_cost: number
+          packaging_cost: number
+          sale_price: number
+          stock: number
+          updated_at: string
+          yield_units: number
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          other_cost?: number
+          packaging_cost?: number
+          sale_price?: number
+          stock?: number
+          updated_at?: string
+          yield_units?: number
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          other_cost?: number
+          packaging_cost?: number
+          sale_price?: number
+          stock?: number
+          updated_at?: string
+          yield_units?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -662,6 +813,269 @@ export type Database = {
           },
         ]
       }
+      sale_items: {
+        Row: {
+          id: string
+          product_id: string | null
+          product_name: string
+          quantity: number
+          sale_id: string
+          unit_cost: number
+          unit_price: number
+        }
+        Insert: {
+          id?: string
+          product_id?: string | null
+          product_name: string
+          quantity: number
+          sale_id: string
+          unit_cost: number
+          unit_price: number
+        }
+        Update: {
+          id?: string
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+          sale_id?: string
+          unit_cost?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sale_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sale_items_sale_id_fkey"
+            columns: ["sale_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sales: {
+        Row: {
+          cost_total: number
+          created_at: string
+          created_by: string | null
+          id: string
+          notes: string | null
+          patient_id: string | null
+          sale_date: string
+          total: number
+        }
+        Insert: {
+          cost_total?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          patient_id?: string | null
+          sale_date?: string
+          total?: number
+        }
+        Update: {
+          cost_total?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          patient_id?: string | null
+          sale_date?: string
+          total?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      session_revisions: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          id: string
+          previous_data: Json
+          session_id: string
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          previous_data: Json
+          session_id: string
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          previous_data?: Json
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_revisions_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "treatment_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stock_movements: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          product_id: string
+          quantity: number
+          reason: string
+          sale_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          product_id: string
+          quantity: number
+          reason?: string
+          sale_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          product_id?: string
+          quantity?: number
+          reason?: string
+          sale_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      treatment_sessions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          evolution: string | null
+          id: string
+          indications: string | null
+          marks: Json
+          patient_id: string
+          procedures: string | null
+          professional: string | null
+          session_date: string
+          treatment_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          evolution?: string | null
+          id?: string
+          indications?: string | null
+          marks?: Json
+          patient_id: string
+          procedures?: string | null
+          professional?: string | null
+          session_date?: string
+          treatment_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          evolution?: string | null
+          id?: string
+          indications?: string | null
+          marks?: Json
+          patient_id?: string
+          procedures?: string | null
+          professional?: string | null
+          session_date?: string
+          treatment_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "treatment_sessions_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "treatment_sessions_treatment_id_fkey"
+            columns: ["treatment_id"]
+            isOneToOne: false
+            referencedRelation: "treatments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      treatments: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+          notes: string | null
+          patient_id: string
+          planned_sessions: number
+          professional: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          patient_id: string
+          planned_sessions?: number
+          professional?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          patient_id?: string
+          planned_sessions?: number
+          professional?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "treatments_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -711,6 +1125,15 @@ export type Database = {
           _first_name: string
           _last_name: string
           _phone?: string
+        }
+        Returns: string
+      }
+      register_sale: {
+        Args: {
+          _items: Json
+          _notes: string
+          _patient_id: string
+          _sale_date: string
         }
         Returns: string
       }
