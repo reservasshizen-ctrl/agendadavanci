@@ -17,6 +17,7 @@ import { WaButton } from "@/components/WaButton";
 import { PatientDialog } from "@/components/PatientDialog";
 import { AppointmentDialog } from "@/components/AppointmentDialog";
 import { ReviewDialog } from "@/components/ReviewDialog";
+import { ClinicalSection } from "@/components/ClinicalSection";
 import {
   useChangePatientStatus,
   useLogMessage,
@@ -269,6 +270,8 @@ function PatientDetail() {
         </DialogContent>
       </Dialog>
 
+
+      <ClinicalSection patientId={patient.id} />
 
       <PatientDialog open={editing} onOpenChange={setEditing} patient={patient} />
       <AppointmentDialog open={appt} onOpenChange={setAppt} patient={patient} />
