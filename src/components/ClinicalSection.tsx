@@ -88,7 +88,7 @@ function ClinicalRecordCard({ patientId }: { patientId: string }) {
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="space-y-3">
           <Field label="Profesional responsable">
-            <Input value={form.professional ?? ""} maxLength={80} onChange={(e) => set("professional", e.target.value)} />
+            <Input value={form["professional"] ?? ""} maxLength={80} onChange={(e) => set("professional", e.target.value)} />
           </Field>
           {RECORD_FIELDS.map(([k, l]) => (
             <Field key={k} label={l}>
@@ -364,7 +364,7 @@ function SessionDialog({
 }: {
   treatment: Treatment;
   session: TreatmentSession | null;
-  previous?: TreatmentSession;
+  previous?: TreatmentSession | undefined;
   open: boolean;
   onOpenChange: (v: boolean) => void;
 }) {
