@@ -61,12 +61,12 @@ const q = <R,>(key: unknown[], fn: () => Promise<R>, enabled = true) =>
 async function run<R>(p: PromiseLike<{ data: R; error: unknown }>) {
   const { data, error } = await p;
   if (error) throw error;
-  return data;
+  return data as NonNullable<R>;
 }
 
 export const useClinicalRecord = (patientId: string) =>
   q(["clinical", patientId], () =>
-    run(supabase.from("clinical_records").select("*").eq("patient_id", patientId).maybeSingle()),
+    run(supabase.from("clinical_records").select("*").eq("patient_id", patientId).maybeSingle()) as Promise<ClinicalRecord | null>,
   );
 export const useLegend = () =>
   q(["legend"], () => run(supabase.from("body_legend").select("*").order("sort")));

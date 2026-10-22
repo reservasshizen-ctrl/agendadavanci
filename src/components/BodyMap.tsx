@@ -223,7 +223,7 @@ function Canvas({
   side: BodySide;
   marks: BodyMark[];
   selected: string | null;
-  readOnly?: boolean;
+  readOnly?: boolean | undefined;
   placing: boolean;
   onPlace: (x: number, y: number) => void;
   onSelect: (id: string | null) => void;

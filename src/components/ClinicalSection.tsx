@@ -88,7 +88,7 @@ function ClinicalRecordCard({ patientId }: { patientId: string }) {
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="space-y-3">
           <Field label="Profesional responsable">
-            <Input value={form.professional ?? ""} maxLength={80} onChange={(e) => set("professional", e.target.value)} />
+            <Input value={form["professional"] ?? ""} maxLength={80} onChange={(e) => set("professional", e.target.value)} />
           </Field>
           {RECORD_FIELDS.map(([k, l]) => (
             <Field key={k} label={l}>
@@ -290,8 +290,8 @@ function TreatmentDialog({
 
   const submit = async () => {
     const planned = parseInt(f.planned, 10);
-    if (!f.name.trim()) return toast.error("Indicá el nombre del tratamiento");
-    if (!Number.isFinite(planned) || planned < 1) return toast.error("La cantidad de sesiones debe ser al menos 1");
+    if (!f.name.trim()) { toast.error("Indicá el nombre del tratamiento"); return; }
+    if (!Number.isFinite(planned) || planned < 1) { toast.error("La cantidad de sesiones debe ser al menos 1"); return; }
     try {
       await save.mutateAsync({
         id: treatment?.id,
@@ -364,7 +364,7 @@ function SessionDialog({
 }: {
   treatment: Treatment;
   session: TreatmentSession | null;
-  previous?: TreatmentSession;
+  previous?: TreatmentSession | undefined;
   open: boolean;
   onOpenChange: (v: boolean) => void;
 }) {
@@ -406,7 +406,7 @@ function SessionDialog({
   };
 
   const submit = async () => {
-    if (!f.date) return toast.error("Indicá la fecha de la sesión");
+    if (!f.date) { toast.error("Indicá la fecha de la sesión"); return; }
     try {
       await save.mutateAsync({
         id: session?.id,

@@ -15,15 +15,18 @@ import { Route as AccesoPacienteRouteImport } from './routes/acceso-paciente'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as PortalRouteRouteImport } from './routes/portal/route'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
+import { Route as AuthenticatedArticulosRouteImport } from './routes/_authenticated/articulos'
 import { Route as AuthenticatedConfiguracionRouteImport } from './routes/_authenticated/configuracion'
 import { Route as AuthenticatedContenidoRouteImport } from './routes/_authenticated/contenido'
 import { Route as AuthenticatedCumpleanosRouteImport } from './routes/_authenticated/cumpleanos'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedFaltasRouteImport } from './routes/_authenticated/faltas'
 import { Route as AuthenticatedHistorialRouteImport } from './routes/_authenticated/historial'
+import { Route as AuthenticatedIndicadoresRouteImport } from './routes/_authenticated/indicadores'
 import { Route as AuthenticatedNotificarRouteImport } from './routes/_authenticated/notificar'
 import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
+import { Route as AuthenticatedVentasRouteImport } from './routes/_authenticated/ventas'
 import { Route as PortalIndexRouteImport } from './routes/portal/index'
 import { Route as PortalCuentaRouteImport } from './routes/portal/cuenta'
 import { Route as PortalNotificacionesRouteImport } from './routes/portal/notificaciones'
@@ -63,6 +66,11 @@ const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
   path: '/agenda',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedArticulosRoute = AuthenticatedArticulosRouteImport.update({
+  id: '/articulos',
+  path: '/articulos',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedConfiguracionRoute =
   AuthenticatedConfiguracionRouteImport.update({
     id: '/configuracion',
@@ -94,6 +102,12 @@ const AuthenticatedHistorialRoute = AuthenticatedHistorialRouteImport.update({
   path: '/historial',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedIndicadoresRoute =
+  AuthenticatedIndicadoresRouteImport.update({
+    id: '/indicadores',
+    path: '/indicadores',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedNotificarRoute = AuthenticatedNotificarRouteImport.update({
   id: '/notificar',
   path: '/notificar',
@@ -107,6 +121,11 @@ const AuthenticatedPendientesRoute = AuthenticatedPendientesRouteImport.update({
 const AuthenticatedRevisionesRoute = AuthenticatedRevisionesRouteImport.update({
   id: '/revisiones',
   path: '/revisiones',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedVentasRoute = AuthenticatedVentasRouteImport.update({
+  id: '/ventas',
+  path: '/ventas',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const PortalIndexRoute = PortalIndexRouteImport.update({
@@ -163,15 +182,18 @@ export interface FileRoutesByFullPath {
   '/acceso-paciente': typeof AccesoPacienteRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
+  '/articulos': typeof AuthenticatedArticulosRoute
   '/configuracion': typeof AuthenticatedConfiguracionRoute
   '/contenido': typeof AuthenticatedContenidoRoute
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
   '/historial': typeof AuthenticatedHistorialRoute
+  '/indicadores': typeof AuthenticatedIndicadoresRoute
   '/notificar': typeof AuthenticatedNotificarRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/ventas': typeof AuthenticatedVentasRoute
   '/portal/cuenta': typeof PortalCuentaRoute
   '/portal/notificaciones': typeof PortalNotificacionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
@@ -187,15 +209,18 @@ export interface FileRoutesByTo {
   '/acceso-paciente': typeof AccesoPacienteRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
+  '/articulos': typeof AuthenticatedArticulosRoute
   '/configuracion': typeof AuthenticatedConfiguracionRoute
   '/contenido': typeof AuthenticatedContenidoRoute
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
   '/historial': typeof AuthenticatedHistorialRoute
+  '/indicadores': typeof AuthenticatedIndicadoresRoute
   '/notificar': typeof AuthenticatedNotificarRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/ventas': typeof AuthenticatedVentasRoute
   '/portal/cuenta': typeof PortalCuentaRoute
   '/portal/notificaciones': typeof PortalNotificacionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
@@ -214,15 +239,18 @@ export interface FileRoutesById {
   '/acceso-paciente': typeof AccesoPacienteRoute
   '/auth': typeof AuthRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
+  '/_authenticated/articulos': typeof AuthenticatedArticulosRoute
   '/_authenticated/configuracion': typeof AuthenticatedConfiguracionRoute
   '/_authenticated/contenido': typeof AuthenticatedContenidoRoute
   '/_authenticated/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/faltas': typeof AuthenticatedFaltasRoute
   '/_authenticated/historial': typeof AuthenticatedHistorialRoute
+  '/_authenticated/indicadores': typeof AuthenticatedIndicadoresRoute
   '/_authenticated/notificar': typeof AuthenticatedNotificarRoute
   '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
+  '/_authenticated/ventas': typeof AuthenticatedVentasRoute
   '/portal/cuenta': typeof PortalCuentaRoute
   '/portal/notificaciones': typeof PortalNotificacionesRoute
   '/portal/novedades': typeof PortalNovedadesRoute
@@ -241,15 +269,18 @@ export interface FileRouteTypes {
     | '/acceso-paciente'
     | '/auth'
     | '/agenda'
+    | '/articulos'
     | '/configuracion'
     | '/contenido'
     | '/cumpleanos'
     | '/dashboard'
     | '/faltas'
     | '/historial'
+    | '/indicadores'
     | '/notificar'
     | '/pendientes'
     | '/revisiones'
+    | '/ventas'
     | '/portal/cuenta'
     | '/portal/notificaciones'
     | '/portal/novedades'
@@ -265,15 +296,18 @@ export interface FileRouteTypes {
     | '/acceso-paciente'
     | '/auth'
     | '/agenda'
+    | '/articulos'
     | '/configuracion'
     | '/contenido'
     | '/cumpleanos'
     | '/dashboard'
     | '/faltas'
     | '/historial'
+    | '/indicadores'
     | '/notificar'
     | '/pendientes'
     | '/revisiones'
+    | '/ventas'
     | '/portal/cuenta'
     | '/portal/notificaciones'
     | '/portal/novedades'
@@ -291,15 +325,18 @@ export interface FileRouteTypes {
     | '/acceso-paciente'
     | '/auth'
     | '/_authenticated/agenda'
+    | '/_authenticated/articulos'
     | '/_authenticated/configuracion'
     | '/_authenticated/contenido'
     | '/_authenticated/cumpleanos'
     | '/_authenticated/dashboard'
     | '/_authenticated/faltas'
     | '/_authenticated/historial'
+    | '/_authenticated/indicadores'
     | '/_authenticated/notificar'
     | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
+    | '/_authenticated/ventas'
     | '/portal/cuenta'
     | '/portal/notificaciones'
     | '/portal/novedades'
@@ -364,6 +401,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAgendaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/articulos': {
+      id: '/_authenticated/articulos'
+      path: '/articulos'
+      fullPath: '/articulos'
+      preLoaderRoute: typeof AuthenticatedArticulosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/configuracion': {
       id: '/_authenticated/configuracion'
       path: '/configuracion'
@@ -406,6 +450,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistorialRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/indicadores': {
+      id: '/_authenticated/indicadores'
+      path: '/indicadores'
+      fullPath: '/indicadores'
+      preLoaderRoute: typeof AuthenticatedIndicadoresRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/notificar': {
       id: '/_authenticated/notificar'
       path: '/notificar'
@@ -425,6 +476,13 @@ declare module '@tanstack/react-router' {
       path: '/revisiones'
       fullPath: '/revisiones'
       preLoaderRoute: typeof AuthenticatedRevisionesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ventas': {
+      id: '/_authenticated/ventas'
+      path: '/ventas'
+      fullPath: '/ventas'
+      preLoaderRoute: typeof AuthenticatedVentasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/portal/': {
@@ -495,30 +553,36 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
+  AuthenticatedArticulosRoute: typeof AuthenticatedArticulosRoute
   AuthenticatedConfiguracionRoute: typeof AuthenticatedConfiguracionRoute
   AuthenticatedContenidoRoute: typeof AuthenticatedContenidoRoute
   AuthenticatedCumpleanosRoute: typeof AuthenticatedCumpleanosRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFaltasRoute: typeof AuthenticatedFaltasRoute
   AuthenticatedHistorialRoute: typeof AuthenticatedHistorialRoute
+  AuthenticatedIndicadoresRoute: typeof AuthenticatedIndicadoresRoute
   AuthenticatedNotificarRoute: typeof AuthenticatedNotificarRoute
   AuthenticatedPendientesRoute: typeof AuthenticatedPendientesRoute
   AuthenticatedRevisionesRoute: typeof AuthenticatedRevisionesRoute
+  AuthenticatedVentasRoute: typeof AuthenticatedVentasRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRoute
   AuthenticatedPacientesIndexRoute: typeof AuthenticatedPacientesIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
+  AuthenticatedArticulosRoute: AuthenticatedArticulosRoute,
   AuthenticatedConfiguracionRoute: AuthenticatedConfiguracionRoute,
   AuthenticatedContenidoRoute: AuthenticatedContenidoRoute,
   AuthenticatedCumpleanosRoute: AuthenticatedCumpleanosRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFaltasRoute: AuthenticatedFaltasRoute,
   AuthenticatedHistorialRoute: AuthenticatedHistorialRoute,
+  AuthenticatedIndicadoresRoute: AuthenticatedIndicadoresRoute,
   AuthenticatedNotificarRoute: AuthenticatedNotificarRoute,
   AuthenticatedPendientesRoute: AuthenticatedPendientesRoute,
   AuthenticatedRevisionesRoute: AuthenticatedRevisionesRoute,
+  AuthenticatedVentasRoute: AuthenticatedVentasRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRoute,
   AuthenticatedPacientesIndexRoute: AuthenticatedPacientesIndexRoute,
 }

@@ -16,6 +16,9 @@ import {
   TriangleAlert,
   Users,
   HeartPulse,
+  ChartColumn,
+  FlaskConical,
+  ShoppingCart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +43,9 @@ const nav = [
   { to: "/cumpleanos", label: "Cumpleaños", icon: Cake },
   { to: "/pendientes", label: "Pendientes de envío", icon: Send },
   { to: "/faltas", label: "Faltas / Abandonos", icon: TriangleAlert },
+  { to: "/indicadores", label: "Seguimiento e indicadores", icon: ChartColumn },
+  { to: "/articulos", label: "Artículos y fórmulas", icon: FlaskConical },
+  { to: "/ventas", label: "Ventas", icon: ShoppingCart },
   { to: "/contenido", label: "Contenido del portal", icon: Newspaper },
   { to: "/notificar", label: "Enviar notificaciones", icon: Bell },
   { to: "/historial", label: "Historial", icon: History },

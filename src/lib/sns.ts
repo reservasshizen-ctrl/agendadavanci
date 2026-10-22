@@ -219,3 +219,27 @@ export const AUDIT_ACTION_LABELS: Record<string, string> = {
   patient_restored: "Paciente restaurado",
   patient_deleted: "Paciente eliminado",
 };
+
+/* ---------- Superposición de turnos ---------- */
+
+const toMin = (t: string) => {
+  const [h, m] = t.split(":").map(Number);
+  return (h ?? 0) * 60 + (m ?? 0);
+};
+
+/** Turnos del mismo profesional que se pisan con el horario indicado (ignora cancelados). */
+export const overlappingAppointments = <A extends Pick<Appointment, "id" | "time" | "duration" | "professional" | "status">>(
+  list: A[],
+  slot: { time: string; duration: number; professional: string; excludeId?: string },
+) => {
+  const prof = slot.professional.trim().toLowerCase();
+  if (!prof) return [];
+  const start = toMin(slot.time);
+  const end = start + slot.duration;
+  return list.filter((a) => {
+    if (a.id === slot.excludeId || a.status === "cancelo" || a.status === "reprogramo") return false;
+    if ((a.professional ?? "").trim().toLowerCase() !== prof) return false;
+    const s = toMin(a.time);
+    return s < end && start < s + a.duration;
+  });
+};
