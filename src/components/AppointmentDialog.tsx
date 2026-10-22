@@ -4,8 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { APPOINTMENT_TYPES, label, todayISO, type Patient } from "@/lib/sns";
-import { useSaveAppointment } from "@/lib/db";
+import { APPOINTMENT_TYPES, formatTime, label, overlappingAppointments, todayISO, type Patient } from "@/lib/sns";
+import { useAppointments, useSaveAppointment } from "@/lib/db";
 import { PatientPicker } from "@/components/PatientPicker";
 import { Field } from "@/components/PatientDialog";
 
@@ -28,6 +28,12 @@ export function AppointmentDialog({
   const [professional, setProfessional] = useState("");
   const [notes, setNotes] = useState("");
   const save = useSaveAppointment();
+  const { data: dayAppts = [] } = useAppointments(date, date);
+  const overlaps = overlappingAppointments(dayAppts, {
+    time,
+    duration: Number(duration) || 30,
+    professional,
+  });
 
   useEffect(() => {
     if (!open) return;
@@ -49,6 +55,11 @@ export function AppointmentDialog({
       toast.error("Indicá fecha y hora");
       return;
     }
+    if (
+      overlaps.length > 0 &&
+      !window.confirm("Este profesional ya tiene un turno en ese horario. ¿Agendar igual?")
+    )
+      return;
     try {
       await save.mutateAsync({
         patient_id: selected.id,
@@ -104,6 +115,12 @@ export function AppointmentDialog({
           <Field label="Profesional">
             <Input value={professional} onChange={(e) => setProfessional(e.target.value)} maxLength={100} />
           </Field>
+          {overlaps.length > 0 && (
+            <div className="rounded-lg border border-warning bg-warning-soft p-3 text-sm text-warning-foreground">
+              Superposición: {professional} ya tiene{" "}
+              {overlaps.map((a) => `${formatTime(a.time)} (${a.duration} min)`).join(", ")} ese día.
+            </div>
+          )}
           <Field label="Observaciones">
             <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} maxLength={1000} />
           </Field>
