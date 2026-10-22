@@ -22,6 +22,7 @@ import { Route as AuthenticatedCumpleanosRouteImport } from './routes/_authentic
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedFaltasRouteImport } from './routes/_authenticated/faltas'
 import { Route as AuthenticatedHistorialRouteImport } from './routes/_authenticated/historial'
+import { Route as AuthenticatedIndicadoresRouteImport } from './routes/_authenticated/indicadores'
 import { Route as AuthenticatedNotificarRouteImport } from './routes/_authenticated/notificar'
 import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
@@ -101,6 +102,12 @@ const AuthenticatedHistorialRoute = AuthenticatedHistorialRouteImport.update({
   path: '/historial',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedIndicadoresRoute =
+  AuthenticatedIndicadoresRouteImport.update({
+    id: '/indicadores',
+    path: '/indicadores',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedNotificarRoute = AuthenticatedNotificarRouteImport.update({
   id: '/notificar',
   path: '/notificar',
@@ -182,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
   '/historial': typeof AuthenticatedHistorialRoute
+  '/indicadores': typeof AuthenticatedIndicadoresRoute
   '/notificar': typeof AuthenticatedNotificarRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
@@ -208,6 +216,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
   '/historial': typeof AuthenticatedHistorialRoute
+  '/indicadores': typeof AuthenticatedIndicadoresRoute
   '/notificar': typeof AuthenticatedNotificarRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
@@ -237,6 +246,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/faltas': typeof AuthenticatedFaltasRoute
   '/_authenticated/historial': typeof AuthenticatedHistorialRoute
+  '/_authenticated/indicadores': typeof AuthenticatedIndicadoresRoute
   '/_authenticated/notificar': typeof AuthenticatedNotificarRoute
   '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
@@ -266,6 +276,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/faltas'
     | '/historial'
+    | '/indicadores'
     | '/notificar'
     | '/pendientes'
     | '/revisiones'
@@ -292,6 +303,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/faltas'
     | '/historial'
+    | '/indicadores'
     | '/notificar'
     | '/pendientes'
     | '/revisiones'
@@ -320,6 +332,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/faltas'
     | '/_authenticated/historial'
+    | '/_authenticated/indicadores'
     | '/_authenticated/notificar'
     | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
@@ -437,6 +450,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistorialRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/indicadores': {
+      id: '/_authenticated/indicadores'
+      path: '/indicadores'
+      fullPath: '/indicadores'
+      preLoaderRoute: typeof AuthenticatedIndicadoresRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/notificar': {
       id: '/_authenticated/notificar'
       path: '/notificar'
@@ -540,6 +560,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFaltasRoute: typeof AuthenticatedFaltasRoute
   AuthenticatedHistorialRoute: typeof AuthenticatedHistorialRoute
+  AuthenticatedIndicadoresRoute: typeof AuthenticatedIndicadoresRoute
   AuthenticatedNotificarRoute: typeof AuthenticatedNotificarRoute
   AuthenticatedPendientesRoute: typeof AuthenticatedPendientesRoute
   AuthenticatedRevisionesRoute: typeof AuthenticatedRevisionesRoute
@@ -557,6 +578,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFaltasRoute: AuthenticatedFaltasRoute,
   AuthenticatedHistorialRoute: AuthenticatedHistorialRoute,
+  AuthenticatedIndicadoresRoute: AuthenticatedIndicadoresRoute,
   AuthenticatedNotificarRoute: AuthenticatedNotificarRoute,
   AuthenticatedPendientesRoute: AuthenticatedPendientesRoute,
   AuthenticatedRevisionesRoute: AuthenticatedRevisionesRoute,
