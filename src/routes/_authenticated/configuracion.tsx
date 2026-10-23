@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { BackupExport } from "@/components/BackupExport";
 import { LegendEditor } from "@/components/LegendEditor";
 import { supabase } from "@/integrations/supabase/client";
 import { appointmentMessage, birthdayMessage, reviewMessage, todayISO } from "@/lib/sns";
@@ -42,6 +43,8 @@ function Configuracion() {
       </section>
 
       <LegendEditor />
+
+      <BackupExport />
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-muted-foreground uppercase">Plantillas de WhatsApp</h2>

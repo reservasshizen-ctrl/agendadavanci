@@ -31,10 +31,29 @@ export const inScope = (p: Patient, scope: PatientScope) => {
   const deleted = Boolean(p.deleted_at);
   if (scope === "eliminados") return deleted;
   if (deleted) return false;
+  if (p.review_status === "pendiente") return false;
   if (scope === "archivados") return p.archived;
   if (scope === "activos") return !p.archived;
   return true;
 };
+
+export function useReviewRequest() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: { id: string; approve: boolean }) => {
+      const { error } = await supabase
+        .from("patients")
+        .update(
+          input.approve
+            ? { review_status: "aprobado" }
+            : { review_status: "rechazado", archived: true },
+        )
+        .eq("id", input.id);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidateAll(qc),
+  });
+}
 
 export function usePatientAudit(patientId: string) {
   return useQuery({
