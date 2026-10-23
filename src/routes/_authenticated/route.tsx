@@ -1,3 +1,4 @@
+import { UserPlus } from "lucide-react";
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -39,6 +40,7 @@ const nav = [
   { to: "/dashboard", label: "Dashboard", icon: Gauge },
   { to: "/agenda", label: "Agenda", icon: Calendar },
   { to: "/pacientes", label: "Pacientes", icon: Users },
+  { to: "/solicitudes", label: "Solicitudes de registro", icon: UserPlus },
   { to: "/revisiones", label: "Revisiones", icon: Stethoscope },
   { to: "/cumpleanos", label: "Cumpleaños", icon: Cake },
   { to: "/pendientes", label: "Pendientes de envío", icon: Send },

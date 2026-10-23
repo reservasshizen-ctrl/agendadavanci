@@ -558,6 +558,7 @@ export type Database = {
           origin: string
           phone: string | null
           registration_source: string
+          review_status: string
           status: string
           updated_at: string
           whatsapp: string | null
@@ -586,6 +587,7 @@ export type Database = {
           origin?: string
           phone?: string | null
           registration_source?: string
+          review_status?: string
           status?: string
           updated_at?: string
           whatsapp?: string | null
@@ -614,6 +616,7 @@ export type Database = {
           origin?: string
           phone?: string | null
           registration_source?: string
+          review_status?: string
           status?: string
           updated_at?: string
           whatsapp?: string | null

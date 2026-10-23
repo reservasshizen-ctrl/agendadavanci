@@ -8,6 +8,6 @@
 - [x] Artículos, fórmulas, existencias y ventas (guaraníes)
 - [x] Pantalla para editar la leyenda del mapa corporal (hoy se cargan AR, H, E, CX, AT, INF)
 - [ ] Ingreso del paciente con código SMS — bloqueado: requiere conectar Twilio (costo por mensaje)
-- [ ] Registro público con revisión de solicitudes pendientes — a definir con el usuario
-- [ ] Respaldos exportables — a definir con el usuario
+- [x] Registro público con revisión de solicitudes pendientes
+- [x] Respaldos exportables (CSV)
 - Fuera de alcance web: Room/Android, Firebase, sincronización sin conexión
