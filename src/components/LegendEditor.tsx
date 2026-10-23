@@ -14,8 +14,8 @@ export function LegendEditor() {
 
   const add = async () => {
     const c = code.trim().toUpperCase();
-    if (!c || !meaning.trim()) return toast.error("Completá abreviatura y significado.");
-    if (legend.some((l) => l.code === c)) return toast.error("Esa abreviatura ya existe.");
+    if (!c || !meaning.trim()) { toast.error("Completá abreviatura y significado."); return; }
+    if (legend.some((l) => l.code === c)) { toast.error("Esa abreviatura ya existe."); return; }
     try {
       await save.mutateAsync({ code: c, meaning: meaning.trim(), sort: legend.length + 1 });
       setCode("");

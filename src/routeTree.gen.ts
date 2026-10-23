@@ -26,6 +26,7 @@ import { Route as AuthenticatedIndicadoresRouteImport } from './routes/_authenti
 import { Route as AuthenticatedNotificarRouteImport } from './routes/_authenticated/notificar'
 import { Route as AuthenticatedPendientesRouteImport } from './routes/_authenticated/pendientes'
 import { Route as AuthenticatedRevisionesRouteImport } from './routes/_authenticated/revisiones'
+import { Route as AuthenticatedSolicitudesRouteImport } from './routes/_authenticated/solicitudes'
 import { Route as AuthenticatedVentasRouteImport } from './routes/_authenticated/ventas'
 import { Route as PortalIndexRouteImport } from './routes/portal/index'
 import { Route as PortalCuentaRouteImport } from './routes/portal/cuenta'
@@ -123,6 +124,12 @@ const AuthenticatedRevisionesRoute = AuthenticatedRevisionesRouteImport.update({
   path: '/revisiones',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSolicitudesRoute =
+  AuthenticatedSolicitudesRouteImport.update({
+    id: '/solicitudes',
+    path: '/solicitudes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedVentasRoute = AuthenticatedVentasRouteImport.update({
   id: '/ventas',
   path: '/ventas',
@@ -193,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/notificar': typeof AuthenticatedNotificarRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/solicitudes': typeof AuthenticatedSolicitudesRoute
   '/ventas': typeof AuthenticatedVentasRoute
   '/portal/cuenta': typeof PortalCuentaRoute
   '/portal/notificaciones': typeof PortalNotificacionesRoute
@@ -220,6 +228,7 @@ export interface FileRoutesByTo {
   '/notificar': typeof AuthenticatedNotificarRoute
   '/pendientes': typeof AuthenticatedPendientesRoute
   '/revisiones': typeof AuthenticatedRevisionesRoute
+  '/solicitudes': typeof AuthenticatedSolicitudesRoute
   '/ventas': typeof AuthenticatedVentasRoute
   '/portal/cuenta': typeof PortalCuentaRoute
   '/portal/notificaciones': typeof PortalNotificacionesRoute
@@ -250,6 +259,7 @@ export interface FileRoutesById {
   '/_authenticated/notificar': typeof AuthenticatedNotificarRoute
   '/_authenticated/pendientes': typeof AuthenticatedPendientesRoute
   '/_authenticated/revisiones': typeof AuthenticatedRevisionesRoute
+  '/_authenticated/solicitudes': typeof AuthenticatedSolicitudesRoute
   '/_authenticated/ventas': typeof AuthenticatedVentasRoute
   '/portal/cuenta': typeof PortalCuentaRoute
   '/portal/notificaciones': typeof PortalNotificacionesRoute
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/notificar'
     | '/pendientes'
     | '/revisiones'
+    | '/solicitudes'
     | '/ventas'
     | '/portal/cuenta'
     | '/portal/notificaciones'
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/notificar'
     | '/pendientes'
     | '/revisiones'
+    | '/solicitudes'
     | '/ventas'
     | '/portal/cuenta'
     | '/portal/notificaciones'
@@ -336,6 +348,7 @@ export interface FileRouteTypes {
     | '/_authenticated/notificar'
     | '/_authenticated/pendientes'
     | '/_authenticated/revisiones'
+    | '/_authenticated/solicitudes'
     | '/_authenticated/ventas'
     | '/portal/cuenta'
     | '/portal/notificaciones'
@@ -478,6 +491,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRevisionesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/solicitudes': {
+      id: '/_authenticated/solicitudes'
+      path: '/solicitudes'
+      fullPath: '/solicitudes'
+      preLoaderRoute: typeof AuthenticatedSolicitudesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/ventas': {
       id: '/_authenticated/ventas'
       path: '/ventas'
@@ -564,6 +584,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedNotificarRoute: typeof AuthenticatedNotificarRoute
   AuthenticatedPendientesRoute: typeof AuthenticatedPendientesRoute
   AuthenticatedRevisionesRoute: typeof AuthenticatedRevisionesRoute
+  AuthenticatedSolicitudesRoute: typeof AuthenticatedSolicitudesRoute
   AuthenticatedVentasRoute: typeof AuthenticatedVentasRoute
   AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRoute
   AuthenticatedPacientesIndexRoute: typeof AuthenticatedPacientesIndexRoute
@@ -582,6 +603,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedNotificarRoute: AuthenticatedNotificarRoute,
   AuthenticatedPendientesRoute: AuthenticatedPendientesRoute,
   AuthenticatedRevisionesRoute: AuthenticatedRevisionesRoute,
+  AuthenticatedSolicitudesRoute: AuthenticatedSolicitudesRoute,
   AuthenticatedVentasRoute: AuthenticatedVentasRoute,
   AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRoute,
   AuthenticatedPacientesIndexRoute: AuthenticatedPacientesIndexRoute,
