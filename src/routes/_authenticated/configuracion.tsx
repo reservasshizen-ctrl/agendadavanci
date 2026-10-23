@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { LegendEditor } from "@/components/LegendEditor";
 import { supabase } from "@/integrations/supabase/client";
 import { appointmentMessage, birthdayMessage, reviewMessage, todayISO } from "@/lib/sns";
 
@@ -39,6 +40,8 @@ function Configuracion() {
         <h2 className="text-sm font-semibold text-muted-foreground uppercase">Cuenta</h2>
         <p className="mt-2 text-sm">{email || "—"}</p>
       </section>
+
+      <LegendEditor />
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-muted-foreground uppercase">Plantillas de WhatsApp</h2>
