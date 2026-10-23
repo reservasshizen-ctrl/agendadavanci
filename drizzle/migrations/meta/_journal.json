@@ -8,6 +8,13 @@
       "when": 1792594034641,
       "tag": "0000_clinical_and_sales",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792760448894,
+      "tag": "0001_patient_review_status",
+      "breakpoints": true
     }
   ]
 }
