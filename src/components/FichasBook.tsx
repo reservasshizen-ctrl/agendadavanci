@@ -20,6 +20,7 @@ export type FichaMark = {
   angle: number;
   text: string;
   points?: [number, number][];
+  len?: number;
 };
 type Tool = "mover" | FichaMark["kind"];
 
@@ -47,8 +48,8 @@ function useFichas(patientId: string) {
 export function FichasBook({ patient }: { patient: Patient }) {
   const qc = useQueryClient();
   const { data: fichas = [], isLoading } = useFichas(patient.id);
-  const [page, setPage] = useState(0);
-  const idx = Math.min(page, Math.max(0, fichas.length - 1));
+  const [page, setPage] = useState<number | null>(null);
+  const idx = page === null ? Math.max(0, fichas.length - 1) : Math.min(page, Math.max(0, fichas.length - 1));
   const current = fichas[idx];
 
   const create = useMutation({
@@ -395,6 +396,8 @@ function Board({ marks, onChange }: { marks: FichaMark[]; onChange: (m: FichaMar
         <label className="flex items-center gap-2 text-xs text-muted-foreground">
           Dirección
           <input type="range" min={0} max={359} value={sel.angle} onChange={(e) => update(sel.id, { angle: Number(e.target.value) })} className="flex-1" />
+          Largo
+          <input type="range" min={16} max={400} value={sel.len ?? 32} onChange={(e) => update(sel.id, { len: Number(e.target.value) })} className="flex-1" />
         </label>
       )}
       {sel?.kind === "texto" && (
@@ -470,7 +473,10 @@ function Board({ marks, onChange }: { marks: FichaMark[]; onChange: (m: FichaMar
               style={{ left: `${m.x * 100}%`, top: `${m.y * 100}%` }}
             >
               {m.kind === "flecha" ? (
-                <ArrowDown className="size-8" strokeWidth={3} style={{ transform: `rotate(${m.angle}deg)` }} />
+                <svg width={24} height={m.len ?? 32} viewBox={`0 0 24 ${m.len ?? 32}`} className="block overflow-visible" style={{ transform: `rotate(${m.angle}deg)` }}>
+                  <line x1={12} y1={0} x2={12} y2={(m.len ?? 32) - 2} stroke="currentColor" strokeWidth={3} strokeLinecap="round" />
+                  <polyline points={`4,${(m.len ?? 32) - 10} 12,${(m.len ?? 32) - 2} 20,${(m.len ?? 32) - 10}`} fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               ) : (
                 <span className="block whitespace-pre rounded border border-danger bg-card px-1.5 py-0.5 text-xs font-bold">{m.text || "Texto"}</span>
               )}
