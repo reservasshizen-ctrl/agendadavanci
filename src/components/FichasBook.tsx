@@ -234,6 +234,7 @@ function FichaPage({ ficha, patient }: { ficha: Ficha; patient: Patient }) {
             <Txt label="F89" k="ind_f89" f={f} w="w-20" />
           </div>
           <Txt label="Ejer: codo, Cervical, Nadar, piernas, sentado, dedos, otro" k="ejercicios" f={f} />
+          <Area label="Suplementos que llevó" k="suplementos" f={f} />
           <div className="flex flex-wrap gap-3">
             <Txt label="Resp." k="resp" f={f} w="w-40" />
             <Txt label="Frec. día" k="frec" f={f} w="w-24" />
@@ -248,6 +249,7 @@ function FichaPage({ ficha, patient }: { ficha: Ficha; patient: Patient }) {
           <Area label="Obs." k="obs" f={f} />
           <Area label="Rp." k="rp" f={f} />
           <Txt label="Ausencia" k="ausencia" f={f} />
+          <Area label="Suplementos que llevó" k="suplementos" f={f} />
           <div className="flex flex-wrap items-center gap-3">
             <Txt label="Rsp. Pn." k="rsp" f={f} w="w-32" />
             <Txt label="Frec./día" k="frec" f={f} w="w-20" />

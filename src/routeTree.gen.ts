@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AccesoPacienteRouteImport } from './routes/acceso-paciente'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as PortalRouteRouteImport } from './routes/portal/route'
+import { Route as AuthenticatedActividadRouteImport } from './routes/_authenticated/actividad'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
 import { Route as AuthenticatedArticulosRouteImport } from './routes/_authenticated/articulos'
 import { Route as AuthenticatedConfiguracionRouteImport } from './routes/_authenticated/configuracion'
@@ -62,6 +63,11 @@ const PortalRouteRoute = PortalRouteRouteImport.update({
   id: '/portal',
   path: '/portal',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedActividadRoute = AuthenticatedActividadRouteImport.update({
+  id: '/actividad',
+  path: '/actividad',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
   id: '/agenda',
@@ -194,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/portal': typeof PortalRouteRouteWithChildren
   '/acceso-paciente': typeof AccesoPacienteRoute
   '/auth': typeof AuthRoute
+  '/actividad': typeof AuthenticatedActividadRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/articulos': typeof AuthenticatedArticulosRoute
   '/configuracion': typeof AuthenticatedConfiguracionRoute
@@ -223,6 +230,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/acceso-paciente': typeof AccesoPacienteRoute
   '/auth': typeof AuthRoute
+  '/actividad': typeof AuthenticatedActividadRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/articulos': typeof AuthenticatedArticulosRoute
   '/configuracion': typeof AuthenticatedConfiguracionRoute
@@ -255,6 +263,7 @@ export interface FileRoutesById {
   '/portal': typeof PortalRouteRouteWithChildren
   '/acceso-paciente': typeof AccesoPacienteRoute
   '/auth': typeof AuthRoute
+  '/_authenticated/actividad': typeof AuthenticatedActividadRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
   '/_authenticated/articulos': typeof AuthenticatedArticulosRoute
   '/_authenticated/configuracion': typeof AuthenticatedConfiguracionRoute
@@ -287,6 +296,7 @@ export interface FileRouteTypes {
     | '/portal'
     | '/acceso-paciente'
     | '/auth'
+    | '/actividad'
     | '/agenda'
     | '/articulos'
     | '/configuracion'
@@ -316,6 +326,7 @@ export interface FileRouteTypes {
     | '/'
     | '/acceso-paciente'
     | '/auth'
+    | '/actividad'
     | '/agenda'
     | '/articulos'
     | '/configuracion'
@@ -347,6 +358,7 @@ export interface FileRouteTypes {
     | '/portal'
     | '/acceso-paciente'
     | '/auth'
+    | '/_authenticated/actividad'
     | '/_authenticated/agenda'
     | '/_authenticated/articulos'
     | '/_authenticated/configuracion'
@@ -418,6 +430,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/portal'
       preLoaderRoute: typeof PortalRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/actividad': {
+      id: '/_authenticated/actividad'
+      path: '/actividad'
+      fullPath: '/actividad'
+      preLoaderRoute: typeof AuthenticatedActividadRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/agenda': {
       id: '/_authenticated/agenda'
@@ -591,6 +610,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedActividadRoute: typeof AuthenticatedActividadRoute
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
   AuthenticatedArticulosRoute: typeof AuthenticatedArticulosRoute
   AuthenticatedConfiguracionRoute: typeof AuthenticatedConfiguracionRoute
@@ -611,6 +631,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedActividadRoute: AuthenticatedActividadRoute,
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
   AuthenticatedArticulosRoute: AuthenticatedArticulosRoute,
   AuthenticatedConfiguracionRoute: AuthenticatedConfiguracionRoute,
