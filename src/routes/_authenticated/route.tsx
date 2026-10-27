@@ -1,4 +1,4 @@
-import { UserPlus } from "lucide-react";
+import { NotebookPen, UserPlus } from "lucide-react";
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -39,6 +39,7 @@ export const Route = createFileRoute("/_authenticated")({
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: Gauge },
   { to: "/agenda", label: "Agenda", icon: Calendar },
+  { to: "/fichas", label: "Fichas", icon: NotebookPen },
   { to: "/pacientes", label: "Pacientes", icon: Users },
   { to: "/solicitudes", label: "Solicitudes de registro", icon: UserPlus },
   { to: "/revisiones", label: "Revisiones", icon: Stethoscope },
