@@ -14,6 +14,18 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_viewers: {
+        Row: {
+          user_id: string
+        }
+        Insert: {
+          user_id: string
+        }
+        Update: {
+          user_id?: string
+        }
+        Relationships: []
+      }
       admin_activity_log: {
         Row: {
           action: string
@@ -1176,6 +1188,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_view_activity: { Args: { _uid: string }; Returns: boolean }
       current_patient_id: { Args: never; Returns: string }
       generate_appointment_reminders: { Args: never; Returns: number }
       has_role: {
