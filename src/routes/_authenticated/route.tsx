@@ -1,4 +1,5 @@
-import { NotebookPen, UserPlus } from "lucide-react";
+import { NotebookPen, UserPlus, Activity } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -58,6 +59,14 @@ const nav = [
 function Shell() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { data: canSeeActivity } = useQuery({
+    queryKey: ["can_view_activity"],
+    queryFn: async () => {
+      const { data } = await supabase.from("activity_viewers").select("user_id").limit(1);
+      return (data ?? []).length > 0;
+    },
+  });
+  const items = canSeeActivity ? [...nav, { to: "/actividad", label: "Actividad del personal", icon: Activity } as const] : nav;
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -95,7 +104,7 @@ function Shell() {
           </div>
         </div>
         <nav className="space-y-1 px-3 py-3">
-          {nav.map((item) => (
+          {items.map((item) => (
             <Link
               key={item.to}
               to={item.to}
