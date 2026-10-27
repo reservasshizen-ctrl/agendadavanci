@@ -372,6 +372,53 @@ export type Database = {
           },
         ]
       }
+      fichas: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          data: Json
+          id: string
+          kind: string
+          marks: Json
+          patient_id: string
+          session_date: string
+          session_number: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          data?: Json
+          id?: string
+          kind?: string
+          marks?: Json
+          patient_id: string
+          session_date?: string
+          session_number: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          data?: Json
+          id?: string
+          kind?: string
+          marks?: Json
+          patient_id?: string
+          session_date?: string
+          session_number?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fichas_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
