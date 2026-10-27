@@ -18,6 +18,7 @@ import { PatientDialog } from "@/components/PatientDialog";
 import { AppointmentDialog } from "@/components/AppointmentDialog";
 import { ReviewDialog } from "@/components/ReviewDialog";
 import { ClinicalSection } from "@/components/ClinicalSection";
+import { FichasBook } from "@/components/FichasBook";
 import {
   useChangePatientStatus,
   useLogMessage,
@@ -270,6 +271,8 @@ function PatientDetail() {
         </DialogContent>
       </Dialog>
 
+
+      <FichasBook patient={patient} />
 
       <ClinicalSection patientId={patient.id} />
 

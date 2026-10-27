@@ -30,3 +30,14 @@ describe("copiar marcas", () => {
     expect(copy[0]!.id).not.toBe("1");
   });
 });
+
+import { nextFichaFrom } from "@/components/FichasBook";
+test("primera sesión es ficha de primera consulta", () => {
+  expect(nextFichaFrom(undefined).kind).toBe("primera");
+});
+test("la ficha de seguimiento se copia en la siguiente sesión", () => {
+  const n = nextFichaFrom({ kind: "seguimiento", data: { obs: "dolor" }, marks: [{ id: "a", kind: "flecha", x: 0.5, y: 0.5, angle: 0, text: "" }] });
+  expect(n.kind).toBe("seguimiento");
+  expect(n.data).toEqual({ obs: "dolor" });
+  expect(n.marks[0]!.id).not.toBe("a");
+});
