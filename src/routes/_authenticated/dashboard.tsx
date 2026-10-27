@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CalendarPlus, Cake, Send, Stethoscope, CalendarDays, TriangleAlert } from "lucide-react";
 import { AppointmentRow } from "@/components/AppointmentRow";
+import { TodayChecklist, ImportanceBoard } from "@/components/DashboardBoxes";
 import { AppointmentDialog } from "@/components/AppointmentDialog";
 import { WaButton } from "@/components/WaButton";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -81,6 +82,11 @@ function Dashboard() {
         <Stat icon={Send} label="Enviados" value={sent.length} tone="success" to="/pendientes" />
         <Stat icon={Stethoscope} label="Revisiones próximas" value={upcomingReviews.length} tone="info" to="/revisiones" />
         <Stat icon={Cake} label="Cumpleaños" value={birthdaysToday.length + birthdaysSoon.length} to="/cumpleanos" />
+      </section>
+
+      <section className="grid gap-6 xl:grid-cols-2">
+        <TodayChecklist appts={todays} />
+        <ImportanceBoard />
       </section>
 
       <section className="grid gap-6 xl:grid-cols-2">
