@@ -21,6 +21,7 @@ import { Route as AuthenticatedContenidoRouteImport } from './routes/_authentica
 import { Route as AuthenticatedCumpleanosRouteImport } from './routes/_authenticated/cumpleanos'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedFaltasRouteImport } from './routes/_authenticated/faltas'
+import { Route as AuthenticatedFichasRouteImport } from './routes/_authenticated/fichas'
 import { Route as AuthenticatedHistorialRouteImport } from './routes/_authenticated/historial'
 import { Route as AuthenticatedIndicadoresRouteImport } from './routes/_authenticated/indicadores'
 import { Route as AuthenticatedNotificarRouteImport } from './routes/_authenticated/notificar'
@@ -96,6 +97,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 const AuthenticatedFaltasRoute = AuthenticatedFaltasRouteImport.update({
   id: '/faltas',
   path: '/faltas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFichasRoute = AuthenticatedFichasRouteImport.update({
+  id: '/fichas',
+  path: '/fichas',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedHistorialRoute = AuthenticatedHistorialRouteImport.update({
@@ -195,6 +201,7 @@ export interface FileRoutesByFullPath {
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
+  '/fichas': typeof AuthenticatedFichasRoute
   '/historial': typeof AuthenticatedHistorialRoute
   '/indicadores': typeof AuthenticatedIndicadoresRoute
   '/notificar': typeof AuthenticatedNotificarRoute
@@ -223,6 +230,7 @@ export interface FileRoutesByTo {
   '/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/faltas': typeof AuthenticatedFaltasRoute
+  '/fichas': typeof AuthenticatedFichasRoute
   '/historial': typeof AuthenticatedHistorialRoute
   '/indicadores': typeof AuthenticatedIndicadoresRoute
   '/notificar': typeof AuthenticatedNotificarRoute
@@ -254,6 +262,7 @@ export interface FileRoutesById {
   '/_authenticated/cumpleanos': typeof AuthenticatedCumpleanosRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/faltas': typeof AuthenticatedFaltasRoute
+  '/_authenticated/fichas': typeof AuthenticatedFichasRoute
   '/_authenticated/historial': typeof AuthenticatedHistorialRoute
   '/_authenticated/indicadores': typeof AuthenticatedIndicadoresRoute
   '/_authenticated/notificar': typeof AuthenticatedNotificarRoute
@@ -285,6 +294,7 @@ export interface FileRouteTypes {
     | '/cumpleanos'
     | '/dashboard'
     | '/faltas'
+    | '/fichas'
     | '/historial'
     | '/indicadores'
     | '/notificar'
@@ -313,6 +323,7 @@ export interface FileRouteTypes {
     | '/cumpleanos'
     | '/dashboard'
     | '/faltas'
+    | '/fichas'
     | '/historial'
     | '/indicadores'
     | '/notificar'
@@ -343,6 +354,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cumpleanos'
     | '/_authenticated/dashboard'
     | '/_authenticated/faltas'
+    | '/_authenticated/fichas'
     | '/_authenticated/historial'
     | '/_authenticated/indicadores'
     | '/_authenticated/notificar'
@@ -454,6 +466,13 @@ declare module '@tanstack/react-router' {
       path: '/faltas'
       fullPath: '/faltas'
       preLoaderRoute: typeof AuthenticatedFaltasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/fichas': {
+      id: '/_authenticated/fichas'
+      path: '/fichas'
+      fullPath: '/fichas'
+      preLoaderRoute: typeof AuthenticatedFichasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/historial': {
@@ -579,6 +598,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCumpleanosRoute: typeof AuthenticatedCumpleanosRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFaltasRoute: typeof AuthenticatedFaltasRoute
+  AuthenticatedFichasRoute: typeof AuthenticatedFichasRoute
   AuthenticatedHistorialRoute: typeof AuthenticatedHistorialRoute
   AuthenticatedIndicadoresRoute: typeof AuthenticatedIndicadoresRoute
   AuthenticatedNotificarRoute: typeof AuthenticatedNotificarRoute
@@ -598,6 +618,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCumpleanosRoute: AuthenticatedCumpleanosRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFaltasRoute: AuthenticatedFaltasRoute,
+  AuthenticatedFichasRoute: AuthenticatedFichasRoute,
   AuthenticatedHistorialRoute: AuthenticatedHistorialRoute,
   AuthenticatedIndicadoresRoute: AuthenticatedIndicadoresRoute,
   AuthenticatedNotificarRoute: AuthenticatedNotificarRoute,
