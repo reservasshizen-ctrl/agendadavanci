@@ -418,10 +418,24 @@ export function useAddAgendaDay() {
 export function useDeleteAgendaDay() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from("agenda_days").delete().eq("id", id);
+    /** Quita la pestaña y los turnos de ese día. */
+    mutationFn: async (day: { id: string; date: string }) => {
+      const { error: e1 } = await supabase.from("appointments").delete().eq("date", day.date);
+      if (e1) throw e1;
+      const { error } = await supabase.from("agenda_days").delete().eq("id", day.id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["agenda_days"] }),
+    onSuccess: () => invalidateAll(qc),
+  });
+}
+
+export function useDeleteAppointment() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("appointments").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidateAll(qc),
   });
 }

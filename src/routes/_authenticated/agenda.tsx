@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { CalendarPlus, Plus, Search, Trash2 } from "lucide-react";
+import { CalendarPlus, Plus, Search, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AppointmentRow } from "@/components/AppointmentRow";
@@ -63,15 +63,15 @@ export default function Agenda() {
     }
   };
 
-  const removeDay = async () => {
-    if (!currentDay) return;
-    if (appts.length > 0) {
-      toast.error("Este día tiene turnos. Movelos o cancelalos antes de quitar la pestaña.");
-      return;
+  const removeDay = async (d: { id: string; date: string }) => {
+    if (!window.confirm(`¿Eliminar la pestaña del ${formatDate(d.date)}? También se eliminan todos los turnos de ese día.`)) return;
+    try {
+      await delDay.mutateAsync(d);
+      if (d.date === current) setSelected(null);
+      toast.success("Pestaña eliminada");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "No se pudo eliminar");
     }
-    if (!window.confirm(`¿Quitar la pestaña del ${formatDate(currentDay.date)}?`)) return;
-    await delDay.mutateAsync(currentDay.id);
-    setSelected(null);
   };
 
   const weekday = (iso: string) =>
@@ -114,11 +114,11 @@ export default function Agenda() {
             ) : (
               <nav className="space-y-1">
                 {visibleDays.map((d) => (
+                  <div key={d.id} className="group relative">
                   <button
-                    key={d.id}
                     onClick={() => setSelected(d.date)}
                     className={cn(
-                      "w-full rounded-md border-l-4 px-3 py-2 text-left text-sm transition-colors",
+                      "w-full rounded-md pr-8 border-l-4 px-3 py-2 text-left text-sm transition-colors",
                       d.date === current
                         ? "border-primary bg-primary/10 font-semibold"
                         : "border-transparent hover:bg-secondary",
@@ -127,6 +127,14 @@ export default function Agenda() {
                     <span className="block capitalize">{weekday(d.date)} {formatDate(d.date)}</span>
                     {d.label && <span className="block text-xs text-muted-foreground">{d.label}</span>}
                   </button>
+                  <button
+                    onClick={() => removeDay(d)}
+                    title="Eliminar pestaña"
+                    className="absolute top-2 right-1 rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                  >
+                    <X className="size-4" />
+                  </button>
+                  </div>
                 ))}
               </nav>
             )}
@@ -156,7 +164,7 @@ export default function Agenda() {
                     <Search className="absolute top-2.5 left-3 size-4 text-muted-foreground" />
                     <Input className="pl-9" placeholder="Buscar..." value={query} onChange={(e) => setQuery(e.target.value)} />
                   </div>
-                  <Button size="icon" variant="ghost" onClick={removeDay} title="Quitar pestaña">
+                  <Button size="icon" variant="ghost" onClick={() => removeDay(currentDay)} title="Eliminar pestaña">
                     <Trash2 className="size-4" />
                   </Button>
                 </div>
