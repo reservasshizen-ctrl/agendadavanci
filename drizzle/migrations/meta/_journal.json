@@ -43,6 +43,13 @@
       "when": 1794506520106,
       "tag": "0005_agenda_days",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794507417177,
+      "tag": "0006_restrict_profiles_settings_read",
+      "breakpoints": true
     }
   ]
 }
