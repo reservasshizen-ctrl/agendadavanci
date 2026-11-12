@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { CalendarPlus, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { CalendarPlus, Plus, Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AppointmentRow } from "@/components/AppointmentRow";
 import { AppointmentDialog } from "@/components/AppointmentDialog";
-import { useAppointments } from "@/lib/db";
+import { useAddAgendaDay, useAgendaDays, useAppointments, useDeleteAgendaDay } from "@/lib/db";
 import { matchPatient } from "@/lib/search";
-import { addDaysISO, formatDate, todayISO } from "@/lib/sns";
+import { formatDate, todayISO } from "@/lib/sns";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/agenda")({
@@ -22,126 +23,166 @@ export const Route = createFileRoute("/_authenticated/agenda")({
   component: Agenda,
 });
 
-type View = "dia" | "semana" | "mes";
-type Filter = "todos" | "enviados" | "no_enviados";
-
 export default function Agenda() {
-  const [view, setView] = useState<View>("dia");
-  const [anchor, setAnchor] = useState(todayISO());
-  const [filter, setFilter] = useState<Filter>("todos");
+  const { data: days = [] } = useAgendaDays();
+  const addDay = useAddAgendaDay();
+  const delDay = useDeleteAgendaDay();
+  const [selected, setSelected] = useState<string | null>(null);
+  const [newDate, setNewDate] = useState(todayISO());
+  const [newLabel, setNewLabel] = useState("");
+  const [showPast, setShowPast] = useState(false);
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
 
-  const range = useMemo(() => {
-    if (view === "dia") return { from: anchor, to: anchor };
-    if (view === "semana") {
-      const d = new Date(`${anchor}T00:00:00`);
-      const start = addDaysISO(anchor, -((d.getDay() + 6) % 7));
-      return { from: start, to: addDaysISO(start, 6) };
+  const visibleDays = days.filter((d) => showPast || d.date >= todayISO());
+  const current = selected ?? visibleDays[0]?.date ?? null;
+  const currentDay = days.find((d) => d.date === current);
+
+  const { data: appts = [], isLoading } = useAppointments(current ?? "1900-01-01", current ?? "1900-01-01");
+  const filtered = appts
+    .filter((a) => !query.trim() || (a.patient && matchPatient(a.patient, query)))
+    .sort((x, y) => x.time.localeCompare(y.time));
+  const busyMin = appts
+    .filter((a) => a.status !== "cancelo" && a.status !== "reprogramo")
+    .reduce((n, a) => n + a.duration, 0);
+
+  const createDay = async () => {
+    if (!newDate) return;
+    if (days.some((d) => d.date === newDate)) {
+      setSelected(newDate);
+      toast.info("Ese día ya tiene pestaña");
+      return;
     }
-    const [y, m] = anchor.split("-").map(Number);
-    const first = `${y}-${String(m).padStart(2, "0")}-01`;
-    const last = new Date(y!, m!, 0).getDate();
-    return { from: first, to: `${y}-${String(m).padStart(2, "0")}-${last}` };
-  }, [view, anchor]);
+    try {
+      await addDay.mutateAsync({ date: newDate, label: newLabel.trim() || null });
+      setSelected(newDate);
+      setNewLabel("");
+      toast.success("Día habilitado para agendar");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "No se pudo crear el día");
+    }
+  };
 
-  const { data: appts = [], isLoading } = useAppointments(range.from, range.to);
+  const removeDay = async () => {
+    if (!currentDay) return;
+    if (appts.length > 0) {
+      toast.error("Este día tiene turnos. Movelos o cancelalos antes de quitar la pestaña.");
+      return;
+    }
+    if (!window.confirm(`¿Quitar la pestaña del ${formatDate(currentDay.date)}?`)) return;
+    await delDay.mutateAsync(currentDay.id);
+    setSelected(null);
+  };
 
-  const filtered = appts.filter((a) => {
-    if (filter === "enviados" && !a.schedule_sent) return false;
-    if (filter === "no_enviados" && a.schedule_sent) return false;
-    if (query.trim() && a.patient && !matchPatient(a.patient, query)) return false;
-    return true;
-  });
-
-  const grouped = filtered.reduce<Record<string, typeof filtered>>((acc, a) => {
-    (acc[a.date] ??= []).push(a);
-    return acc;
-  }, {});
-
-  const step = view === "dia" ? 1 : view === "semana" ? 7 : 30;
+  const weekday = (iso: string) =>
+    new Date(`${iso}T00:00:00`).toLocaleDateString("es", { weekday: "long" });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Agenda</h1>
           <p className="text-sm text-muted-foreground">
-            {formatDate(range.from)}
-            {range.from !== range.to ? ` — ${formatDate(range.to)}` : ""}
+            Consulta 10 min · Revisión 10 min · Evaluación y análisis 60 min
           </p>
         </div>
-        <Button onClick={() => setOpen(true)}>
+        <Button onClick={() => setOpen(true)} disabled={!currentDay}>
           <CalendarPlus className="mr-2 size-4" /> Agregar turno
         </Button>
       </header>
 
-      <div className="surface flex flex-wrap items-center gap-3 p-3">
-        <div className="flex items-center gap-1">
-          <Button size="icon" variant="ghost" onClick={() => setAnchor(addDaysISO(anchor, -step))}>
-            <ChevronLeft className="size-4" />
-          </Button>
-          <Button size="sm" variant="secondary" onClick={() => setAnchor(todayISO())}>
-            Hoy
-          </Button>
-          <Button size="icon" variant="ghost" onClick={() => setAnchor(addDaysISO(anchor, step))}>
-            <ChevronRight className="size-4" />
-          </Button>
-        </div>
+      <div className="grid gap-4 md:grid-cols-[240px_1fr]">
+        {/* Pestañas de días */}
+        <aside className="surface space-y-3 p-3">
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-muted-foreground uppercase">Nuevo día de atención</p>
+            <Input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} />
+            <Input placeholder="Nota (opcional)" value={newLabel} maxLength={40} onChange={(e) => setNewLabel(e.target.value)} />
+            <Button size="sm" className="w-full" onClick={createDay} disabled={addDay.isPending}>
+              <Plus className="mr-1 size-4" /> Crear pestaña
+            </Button>
+          </div>
+          <div className="border-t pt-3">
+            <div className="mb-2 flex items-center justify-between">
+              <p className="text-xs font-semibold text-muted-foreground uppercase">Días</p>
+              <button className="text-xs text-muted-foreground underline" onClick={() => setShowPast((v) => !v)}>
+                {showPast ? "Ocultar pasados" : "Ver pasados"}
+              </button>
+            </div>
+            {visibleDays.length === 0 ? (
+              <p className="text-xs text-muted-foreground">Todavía no hay días. Creá uno arriba.</p>
+            ) : (
+              <nav className="space-y-1">
+                {visibleDays.map((d) => (
+                  <button
+                    key={d.id}
+                    onClick={() => setSelected(d.date)}
+                    className={cn(
+                      "w-full rounded-md border-l-4 px-3 py-2 text-left text-sm transition-colors",
+                      d.date === current
+                        ? "border-primary bg-primary/10 font-semibold"
+                        : "border-transparent hover:bg-secondary",
+                    )}
+                  >
+                    <span className="block capitalize">{weekday(d.date)} {formatDate(d.date)}</span>
+                    {d.label && <span className="block text-xs text-muted-foreground">{d.label}</span>}
+                  </button>
+                ))}
+              </nav>
+            )}
+          </div>
+        </aside>
 
-        <Tabs
-          value={view}
-          onChange={(v) => setView(v as View)}
-          options={[
-            ["dia", "Día"],
-            ["semana", "Semana"],
-            ["mes", "Mes"],
-          ]}
-        />
-
-        <Tabs
-          value={filter}
-          onChange={(v) => setFilter(v as Filter)}
-          options={[
-            ["todos", "Todos"],
-            ["no_enviados", "No enviados"],
-            ["enviados", "Enviados"],
-          ]}
-        />
-
-        <div className="relative ml-auto w-full sm:w-64">
-          <Search className="absolute top-2.5 left-3 size-4 text-muted-foreground" />
-          <Input
-            className="pl-9"
-            placeholder="Buscar paciente..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
+        {/* Página del día */}
+        <section className="surface min-h-[400px] p-4">
+          {!currentDay ? (
+            <p className="py-16 text-center text-sm text-muted-foreground">
+              Creá o elegí un día de atención para ver y agendar turnos.
+            </p>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-3">
+                <div>
+                  <h2 className="text-lg font-semibold capitalize">
+                    {weekday(currentDay.date)} {formatDate(currentDay.date)}
+                  </h2>
+                  <p className="text-xs text-muted-foreground">
+                    {appts.length} turnos · {busyMin} min ocupados
+                    {currentDay.label ? ` · ${currentDay.label}` : ""}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="relative w-48">
+                    <Search className="absolute top-2.5 left-3 size-4 text-muted-foreground" />
+                    <Input className="pl-9" placeholder="Buscar..." value={query} onChange={(e) => setQuery(e.target.value)} />
+                  </div>
+                  <Button size="icon" variant="ghost" onClick={removeDay} title="Quitar pestaña">
+                    <Trash2 className="size-4" />
+                  </Button>
+                </div>
+              </div>
+              {isLoading ? (
+                <p className="text-sm text-muted-foreground">Cargando turnos...</p>
+              ) : filtered.length === 0 ? (
+                <button
+                  onClick={() => setOpen(true)}
+                  className="w-full rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground hover:bg-secondary"
+                >
+                  Sin turnos. Tocá acá para agendar el primero.
+                </button>
+              ) : (
+                <div className="space-y-3">
+                  {filtered.map((a) => (
+                    <AppointmentRow key={a.id} appt={a} />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </section>
       </div>
 
-      {isLoading ? (
-        <p className="text-sm text-muted-foreground">Cargando turnos...</p>
-      ) : filtered.length === 0 ? (
-        <div className="surface p-8 text-center text-sm text-muted-foreground">
-          No hay turnos que coincidan con los filtros.
-        </div>
-      ) : (
-        <div className="space-y-6">
-          {Object.entries(grouped).map(([date, items]) => (
-            <section key={date}>
-              <h2 className="mb-3 text-sm font-semibold text-muted-foreground">{formatDate(date)}</h2>
-              <div className="space-y-3">
-                {items.map((a) => (
-                  <AppointmentRow key={a.id} appt={a} />
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-      )}
-
-      <AppointmentDialog open={open} onOpenChange={setOpen} defaultDate={anchor} />
+      <AppointmentDialog open={open} onOpenChange={setOpen} defaultDate={current ?? undefined} />
     </div>
   );
 }

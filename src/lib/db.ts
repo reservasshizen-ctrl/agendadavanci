@@ -388,3 +388,40 @@ export function useLogMessage() {
     onSuccess: () => invalidateAll(qc),
   });
 }
+
+/* ---------- Días de agenda (pestañas) ---------- */
+
+export type AgendaDay = { id: string; date: string; label: string | null };
+
+export function useAgendaDays() {
+  return useQuery({
+    queryKey: ["agenda_days"],
+    queryFn: async (): Promise<AgendaDay[]> => {
+      const { data, error } = await supabase.from("agenda_days").select("id,date,label").order("date");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
+
+export function useAddAgendaDay() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (v: { date: string; label?: string | null }) => {
+      const { error } = await supabase.from("agenda_days").insert({ date: v.date, label: v.label ?? null });
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["agenda_days"] }),
+  });
+}
+
+export function useDeleteAgendaDay() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("agenda_days").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["agenda_days"] }),
+  });
+}

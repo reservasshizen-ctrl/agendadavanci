@@ -33,13 +33,15 @@ export const APPOINTMENT_STATUSES = [
   "reprogramo",
 ] as const;
 
-export const APPOINTMENT_TYPES = [
-  "primera_consulta",
-  "consulta",
-  "revision",
-  "control",
-  "otro",
-] as const;
+export const APPOINTMENT_TYPES = ["consulta", "revision", "evaluacion_analisis"] as const;
+
+/** Duración fija (minutos) por tipo de turno. */
+export const TYPE_DURATIONS: Record<string, number> = {
+  consulta: 10,
+  revision: 10,
+  evaluacion_analisis: 60,
+};
+export const typeDuration = (t: string) => TYPE_DURATIONS[t] ?? 10;
 
 type Tone = "neutral" | "success" | "info" | "warning" | "danger";
 
@@ -62,6 +64,7 @@ export const LABELS: Record<string, string> = {
   revision: "Revisión",
   control: "Control",
   otro: "Otro",
+  evaluacion_analisis: "Evaluación y análisis",
 };
 
 export const TONES: Record<string, Tone> = {

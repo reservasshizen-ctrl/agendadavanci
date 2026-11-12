@@ -56,6 +56,30 @@ export type Database = {
         }
         Relationships: []
       }
+      agenda_days: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          date: string
+          id: string
+          label: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          date: string
+          id?: string
+          label?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          date?: string
+          id?: string
+          label?: string | null
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           key: string
